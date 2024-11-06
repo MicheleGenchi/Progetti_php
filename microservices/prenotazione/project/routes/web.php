@@ -6,14 +6,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/prenotazione', function () {
+Route::get('/prenotazione', function ():Factory|View {
     return view('home');
 });
 
-Route::get('/prenotazione/sportello', function () {
+Route::get('/prenotazione/sportello', function ():Factory|View {
     return view('sportello1');
 });
 
-Route::get('/prenotazione/tabellone', function () {
+Route::get('/prenotazione/tabellone', function ():Factory|View {
     return view('tabellone');
 });
