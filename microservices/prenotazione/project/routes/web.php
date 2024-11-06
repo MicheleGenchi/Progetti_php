@@ -1,8 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
-Route::get('/', function () {
+
+Route::get('/', function () :Factory|View {
     return view('welcome');
 });
 
