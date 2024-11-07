@@ -4,7 +4,7 @@
         <title>Home</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="stylesheet" href="http://localhost:8001/resources/css/app.css">
+        <link rel="stylesheet" href="resouces/css/app.css">
     </head>
 
     <body>
