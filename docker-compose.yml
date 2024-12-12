@@ -80,3 +80,4 @@ services:
       - "host.docker.internal:host-gateway"
     ports:
       - 8001:80
+
