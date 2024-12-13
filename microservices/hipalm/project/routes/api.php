@@ -2,11 +2,8 @@
 
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\CityController;
-use App\Http\Controllers\CountryController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GpsController;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,8 +15,5 @@ use App\Http\Controllers\GpsController;
 |
 */
 
-//Route::get('home', [Controller::class, 'home']);
-Route::get('cittaFiltrate', [CityController::class, 'get']);
-Route::get('nazioniFiltrate', [CountryController::class, 'get']);
-Route::get('verifica_posizione', [GpsController::class, 'verifica_posizione']);
-
+Route::get('home', [Controller::class, 'home']);
+Route::get('registraUtente', [UserController::class, 'put']);
