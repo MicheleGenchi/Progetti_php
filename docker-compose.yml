@@ -80,4 +80,22 @@ services:
       - "host.docker.internal:host-gateway"
     ports:
       - 8001:80
-
+    
+# microservice hipalm
+  hipalm:
+    container_name: hipalm
+    build:
+      context: .
+      dockerfile: microservices/hipalm/Dockerfile
+    entrypoint: php -S 0.0.0.0:80 -t public
+    environment:
+      XDEBUG_MODE: develop,debug
+      XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
+    volumes:
+      - ./microservices/hipalm/project:/hipalm # cartella progetto
+      - ./microservices/hipalm/xdebug/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini # impostazioni per debug
+      - ./microservices/hipalm/php/php.ini:/usr/local/etc/php/php.ini # impostazioni php
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - 8002:80
