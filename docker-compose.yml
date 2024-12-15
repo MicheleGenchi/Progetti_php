@@ -14,13 +14,13 @@ services:
       - --innodb_use_native_aio=0
     container_name: db-test
     ports:
-      - 33060:3306
+      - 33060:3307
 
   # DB 
   db:
     image: mysql:8.0.32
     env_file:
-      - microservices/db/.env.db
+      - microservices/db/.env.db-hipalm
     command:
       - --table_definition_cache=100
       - --performance_schema=0
@@ -28,7 +28,7 @@ services:
       - --innodb_use_native_aio=0
     container_name: db
     ports:
-      - 33061:3306    
+      - 33061:3307    
 
   phpmyadmin:
     container_name: phpmyadmin
