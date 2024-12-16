@@ -14,7 +14,7 @@ services:
       - --innodb_use_native_aio=0
     container_name: db-test
     ports:
-      - 33060:3307
+      - 33060:3306
 
   # DB 
   db:
@@ -28,7 +28,7 @@ services:
       - --innodb_use_native_aio=0
     container_name: db
     ports:
-      - 33061:3307    
+      - 33061:3306    
 
   phpmyadmin:
     container_name: phpmyadmin
