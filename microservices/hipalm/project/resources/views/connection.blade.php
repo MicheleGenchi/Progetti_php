@@ -16,14 +16,14 @@ try {
 			]
 
 	];
-	echo "<p>{"."</p><br/>";
-	echo "&nbsp;"."Connection => ".$response["Connection"];
-	echo "&emsp;"."data => { ";
-	echo "&emsp;&emsp;"."dsn => ".$response["data"]["dsn"];
-	echo "&emsp;&emsp;"."user => ".$response["data"]["user"];
-	echo "&emsp;&emsp;"."password => ".$response["data"]["password"];
-	echo "&emsp;"."}";
-	echo "&nbsp;}</p>";
+	echo "<p>{";
+	echo "<br>&nbsp;"."Connection => ".$response["Connection"];
+	echo "<br>&emsp;"."data => { ";
+	echo "<br>&emsp;&emsp;"."dsn => ".$response["data"]["dsn"];
+	echo "<br>&emsp;&emsp;"."user => ".$response["data"]["user"];
+	echo "<br>&emsp;&emsp;"."password => ".$response["data"]["password"];
+	echo "<br>&emsp;"."}";
+	echo "<br>&nbsp;}</p>";
 
 } catch (PDOException $e) {
 	echo 'Connection failed: ' . $e->getMessage();
