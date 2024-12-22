@@ -1,11 +1,8 @@
 <?php
 
-
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\CityController;
-use App\Http\Controllers\CountryController;
+use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GpsController;
+
 
 /*
 |--------------------------------------------------------------------------
