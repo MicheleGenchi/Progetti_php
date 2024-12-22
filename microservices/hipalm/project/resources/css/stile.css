@@ -1,0 +1,12 @@
+
+.form {
+    width:60%;
+    height:80%;
+    margin:auto;
+    background-color: wheat;
+    color:black;
+}
+
+.form input:hover {
+    color:blue;
+}
