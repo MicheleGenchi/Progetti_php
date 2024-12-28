@@ -3,32 +3,31 @@
 
 <head>
     <title>Registra Utente</title>
-    <!-- 
-    <link href="css/stile.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="js/miojavascript.js"></script>
--->
+    <!-- <link href="/stile.css" rel="stylesheet" type="text/css"> -->
+    <!--<script src="../../resources/js/miojavascript.js" type="text/javascript" ></script> -->
+    @vite(['resources/css/stile.css', 'resources/js/miojs.js']);
 </head>
 
 <body>
     <div class="form">
         <form>
-            <div>
+            <div class="item"
                 <label>UserID</label>
                 <input type="text" />
             </div>
-            <div>
+            <div class="item">
                 <label>nome</label>
                 <input type="text" />
             </div>
-            <div>
+            <div class="item">
                 <label>cognome</label>
                 <input type="text" />
             </div>
-            <div>
+            <div class="item">
                 <label>email</label>
                 <input type="email" />
             </div>
-            <div>
+            <div class="item">
                 <label>password</label>
                 <input type="password" />
             </div>

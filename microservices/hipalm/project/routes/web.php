@@ -2,19 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/testconnection', function () {
-    return view('connection');
-});
+Route::view('/', 'welcome'); // laravel page 
+Route::view('/testconnection','connection'); // test connessione al database
 
 /* pagine per utente */
-Route::get('/utente/registra', function () {
-    return view('utente/registra');
-});
+Route::view('/utente/registra', 'utente/registra');//registra un nuovo utente
+Route::view('/utente/visualizza', 'utente/visualizza');//visualizza utenti
 
-Route::get('/utente/visualizza', function () {
-    return view('utente/visualizza');
-});
