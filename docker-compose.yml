@@ -28,7 +28,7 @@ services:
       - --innodb_use_native_aio=0
     container_name: db
     ports:
-      - 33082:3306    
+      - 33082:3306
 
   phpmyadmin:
     container_name: phpmyadmin
@@ -39,50 +39,10 @@ services:
     ports:
       - 8081:80
     environment:
-       PMA_HOST: db
-       MYSQL_ROOT_PASSWORD: root    
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
 
-    
-# microservice passwordmanager
-  passwordmanager:
-    container_name: passwordmanager
-    build:
-      context: .
-      dockerfile: microservices/passwordmanager/Dockerfile
-    entrypoint: php -S 0.0.0.0:80 -t public
-    environment:
-      XDEBUG_MODE: develop,debug
-      XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
-    volumes:
-      - ./microservices/passwordmanager/project:/passwordmanager # cartella progetto
-      - ./microservices/passwordmanager/xdebug/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini # impostazioni per debug
-      - ./microservices/passwordmanager/php/php.ini:/usr/local/etc/php/php.ini # impostazioni php
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    ports:
-      - 8000:80
-        
-# microservice prenotazione
-  prenotazione:
-    container_name: prenotazione
-    build:
-      context: .
-      dockerfile: microservices/prenotazione/Dockerfile
-    entrypoint: php -S 0.0.0.0:80 -t public
-    environment:
-      XDEBUG_MODE: develop,debug
-      XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
-    volumes:
-      - ./microservices/prenotazione/project:/prenotazione # cartella progetto
-      - ./microservices/prenotazione/xdebug/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini # impostazioni per debug
-      - ./microservices/prenotazione/php/php.ini:/usr/local/etc/php/php.ini # impostazioni php
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    ports:
-      - 8001:80
-
-    
-# microservice hipalm
+  # microservice hipalm
   hipalm:
     container_name: hipalm
     build:

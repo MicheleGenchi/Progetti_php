@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.form {
+    width:60%;
+    height:80%;
+    margin:auto;
+    background-color: wheat;
+    color:black;
+}
+
+input:hover {
+    color:blue;
+}

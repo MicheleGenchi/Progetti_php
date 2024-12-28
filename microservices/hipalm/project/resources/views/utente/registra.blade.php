@@ -3,15 +3,13 @@
 
 <head>
     <title>Registra Utente</title>
-    <!-- <link href="/stile.css" rel="stylesheet" type="text/css"> -->
-    <!--<script src="../../resources/js/miojavascript.js" type="text/javascript" ></script> -->
-    @vite(['resources/css/stile.css', 'resources/js/miojs.js']);
+    @vite(['resources/css/app.css'])
 </head>
 
 <body>
     <div class="form">
         <form>
-            <div class="item"
+            <div class="item">
                 <label>UserID</label>
                 <input type="text" />
             </div>
