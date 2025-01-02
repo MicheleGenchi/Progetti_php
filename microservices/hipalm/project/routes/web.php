@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::View('/', 'welcome');
+Route::Get('testconnessione', [Controller::class, 'testconnection']);
+Route::View('connessione', 'connessione');

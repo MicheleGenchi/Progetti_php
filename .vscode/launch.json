@@ -11,7 +11,6 @@
             "port": 9003,
             "pathMappings": {
                 "/template_progetto/": "${workspaceRoot}\\microservices\\template_progetto\\project", //esempio
-                "/geo-tools/": "${workspaceRoot}\\microservices\\geo-tools\\project", //geo-tools microservice
                 "/hipalm/": "${workspaceRoot}\\microservices\\hipalm\\project" //hipalm microservice
             }
         }
