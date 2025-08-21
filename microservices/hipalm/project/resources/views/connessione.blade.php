@@ -17,7 +17,7 @@
             use GuzzleHttp\Exception\RequestException;
             try {
                 $client = new Client();
-                $response = $client->get('http://localhost:8000/testconnessione');
+                $response = $client->get('localhost:8000/testconnessione');
                 echo $response->getBody();
             } catch (RequestException $e) {
                 echo $e->getMessage() . "\n";
