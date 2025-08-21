@@ -13,18 +13,14 @@
     <div>
         <?php
             use GuzzleHttp\Client;
-            use GuzzleHttp\Psr7\Request;
-            use GuzzleHttp\Exception\RequestException;
+            use GuzzleHttp\Exception\GuzzleException;
             try {
                 $client = new Client();
-                $response = $client->get('localhost:8000/testconnessione');
+                $response = $client->get('http://localhost:8000/testconnessione');
                 echo $response->getBody();
-            } catch (RequestException $e) {
-                echo $e->getMessage() . "\n";
-                var_dump($e->getRequest());
-                if ($e->hasResponse()) {
-                    var_dump($e->getResponse());
-                }
+            } catch (GuzzleException $e) {
+                echo $e->getCode() . "\n";
+                echo $e->getMessage();
             }
         ?>
     </div>

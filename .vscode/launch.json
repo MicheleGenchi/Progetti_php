@@ -10,7 +10,7 @@
             "request": "launch",
             "port": 9003,
             "pathMappings": {
-                "/template_progetto/": "${workspaceRoot}\\microservices\\template_progetto\\project", //esempio
+                "/template/": "${workspaceRoot}\\microservices\\template\\project", //esempio
                 "/hipalm/": "${workspaceRoot}\\microservices\\hipalm\\project" //hipalm microservice
             }
         }
