@@ -18,7 +18,7 @@ services:
   db:
     image: mysql:8.0.32
     env_file:
-      - microservices/db/.env.db-cv
+      - microservices/db/.env.db
     command:
       - --table_definition_cache=100
       - --performance_schema=0
@@ -39,23 +39,3 @@ services:
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: root
-
-    
-# microservice hipalm
-  hipalm:
-    container_name: hipalm
-    build:
-      context: .
-      dockerfile: microservices/hipalm/Dockerfile
-    entrypoint: php -S 0.0.0.0:80 -t public
-    environment:
-      XDEBUG_MODE: develop,debug
-      XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
-    volumes:
-      - ./microservices/hipalm/project:/hipalm # cartella progetto
-      - ./microservices/hipalm/xdebug/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini # impostazioni per debug
-      - ./microservices/hipalm/php/php.ini:/usr/local/etc/php/php.ini # impostazioni php
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    ports:
-      - 8000:80
