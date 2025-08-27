@@ -60,11 +60,10 @@ class Connessione extends Model
         try {
             $dbconnect = DB::connection()->getPDO();
             $dbname = DB::connection()->getDatabaseName() ?? null;
-            if (isset($dbname))
-                return [
-                    'code' => self::HTTP_OK,
-                    'response' => "Connesso a ".$dbname
-                ];
+            return [
+                'code' => self::HTTP_OK,
+                'response' => (isset($dbname))?"Connesso a ".$dbname:"Non connesso a ".$dbname
+            ];
         } catch(Exception $e) {
             echo "Errore di connessione al database";
             return [
