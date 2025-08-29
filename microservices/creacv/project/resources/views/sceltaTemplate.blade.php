@@ -24,7 +24,7 @@
 <body>
     <div id="full">
         <h1 style="text-align:center;">Scelta template</h1>
-        <form action="/api/upload" id="formid" method="get" enctype="multipart/form-data" accept-charset="UTF-8">
+        <form action="/creacv/resources/views/test_files.blade.php" id="formid" method="get" enctype="multipart/form-data" accept-charset="UTF-8">
             <input type="file" name="file" id="file">
             <input type="submit" name="upload" value="Carica file">
         </form>
