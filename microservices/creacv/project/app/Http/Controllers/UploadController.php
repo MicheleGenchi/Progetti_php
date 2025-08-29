@@ -21,7 +21,7 @@ class UploadController extends BaseController
         DBUtilitiesTrait,
         WithValidationTrait;
 
-    public function upload(Request $request): mixed
+    public function upload(Request $request): JsonResponse
     {
         $constraints = new Assert\Collection([
             // the keys correspond to the keys in the input array
@@ -31,7 +31,7 @@ class UploadController extends BaseController
         ]);
 
         # WithValidationTrait
-        $errors = self::valida($request['file'], $constraints);
+        $errors = self::valida($request->file, $constraints);
 
         if (count($errors)) {
             $temp = [
@@ -43,10 +43,14 @@ class UploadController extends BaseController
 
 
         try {
-            $fileName = time() . '.' . $request->file;
-            $request->file->move(public_path('uploads'), $fileName);
-            $ris = back()->with('success', 'File uploaded successfully!')
-                ->with('file', $fileName);
+            $fileName = '/'.time() . '.' . $request->file;
+            //$request->file->move(public_path('uploads'), $fileName);
+            move_uploaded_file('/tmp/'.$request->file ,public_path('uploads').$fileName);
+            $temp = [
+                'code' => self::HTTP_OK,
+                'response' => 'File uploaded successfully!'
+            ];
+            $ris=response()->json($temp, $temp['code']);
         } catch (Exception $e) {
             $temp = [
                 'code' => self::HTTP_BAD_REQUEST,
