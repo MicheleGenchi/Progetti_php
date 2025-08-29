@@ -16,7 +16,7 @@
             padding: 0px;
             background: #0f0;
             height: 100%;
-            vertical-align:middle;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -24,10 +24,11 @@
 <body>
     <div id="full">
         <h1 style="text-align:center;">Scelta template</h1>
-        <form action="/api/upload" id = "formid" method="get" enctype="multipart/form-data" accept-charset="UTF-8">
+        <form action="/api/upload" id="formid" method="get" enctype="multipart/form-data" accept-charset="UTF-8">
             <input type="file" name="file" id="file">
             <input type="submit" name="upload" value="Carica file">
         </form>
     </div>
 </body>
+
 </html>

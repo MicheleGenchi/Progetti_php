@@ -39,35 +39,4 @@ trait ConstraintsTrait
         return $matched;
     }
 
-    /**
-     * Summary of getRulesForCountry
-     * @param array $countrys
-     *   per ciascuna nazione di input, nel file postalCode.json prendo la regex per il codice postale
-     * @return array
-     *   ritorna le regex possibili per le nazioni inserite $country
-     */
-    public static function getRulesForCountry(array $countrys=null):array
-    {
-        if ($countrys==null)
-            return  [];
-
-        $currentDir = getcwd();
-        # a ciascuna sigla di nazione il relativo regex di codice postale 
-        $regex_postalCode=include('postalCode.php');
-
-        $matched=[];
-        foreach ($countrys as $country) {
-            $matched=array_merge($matched,[$country => 
-                                    new Assert\Optional([
-                                        # $regex_postalCode math il country corrente da ciclo foreach
-                                        # prende il regex del codice postale per il country
-                                        new Assert\Regex(['pattern' => $regex_postalCode->$country]) 
-                                    ])
-                                ]
-                    );  
-        }   
-        $matched_country=[new Assert\Collection($matched)];
-        
-        return $matched_country;
-    }
 }
