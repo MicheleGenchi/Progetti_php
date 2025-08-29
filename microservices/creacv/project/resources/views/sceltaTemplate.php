@@ -25,8 +25,9 @@
     <div id="full">
         <h1 style="text-align:center;">Scelta template</h1>
         <form action="/api/upload" id = "formid" method="get" enctype="multipart/form-data" accept-charset="UTF-8">
-            <input type="file" name="name" id="name">
+            <input type="file" name="file" id="file">
             <input type="submit" name="upload" value="Carica file">
         </form>
     </div>
 </body>
+</html>
