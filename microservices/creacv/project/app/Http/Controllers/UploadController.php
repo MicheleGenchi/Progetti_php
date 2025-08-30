@@ -31,30 +31,33 @@ class UploadController extends BaseController
         ]);
 
         # WithValidationTrait
-        $errors = self::valida($request->file, $constraints);
+        $errors = self::valida($request->all, $constraints);
 
         if (count($errors)) {
             $temp = [
                 'code' => self::HTTP_BAD_REQUEST,
-                'response' => ["errors" => $errors]
+                'response' => ["errors" => $errors],
+                'file' =>$_FILES['file']
             ];
             return response()->json($temp, $temp['code']);
         }
 
 
         try {
-            $fileName = '/'.time() . '.' . $request->file;
+            $fileName = public_path('uploads').'/'.$_FILES['file']['name'];
             //$request->file->move(public_path('uploads'), $fileName);
-            move_uploaded_file('/tmp/'.$request->file ,public_path('uploads').$fileName);
+            move_uploaded_file($_FILES['file']['tmp_name'],$fileName);
             $temp = [
                 'code' => self::HTTP_OK,
-                'response' => 'File uploaded successfully!'
+                'response' => 'File uploaded successfully!',
+                'file' =>$_FILES['file']
             ];
             $ris=response()->json($temp, $temp['code']);
         } catch (Exception $e) {
             $temp = [
-                'code' => self::HTTP_BAD_REQUEST,
-                'response' => ["errors" => $errors]
+                'code' => 100,
+                'response' => $e->getMessage(),
+                'file' =>$_FILES['file']
             ];
             $ris=response()->json($temp, $temp['code']);
         }

@@ -23,4 +23,4 @@ Route::get('xdebug', [Controller::class, 'xdebug']);
 Route::view('connessione', 'connessione');
 Route::get('testconnessione', [Controller::class, 'testconnessione']);
 Route::view('sceltaTemplate', 'sceltaTemplate');
-Route::get('upload', [UploadController::class, 'upload']);
+Route::post('upload', [UploadController::class, 'upload']);
