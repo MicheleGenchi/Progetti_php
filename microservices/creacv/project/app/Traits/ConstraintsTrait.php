@@ -26,7 +26,7 @@ trait ConstraintsTrait
     public static function getRules(string $column): array
     {
         $matched= match ($column) {
-            'file' => [new Assert\NotBlank(), new Assert\File(extensions: ['doc', 'docx','dotx'], extensionsMessage:'Il tipo di file deve essere doc, dot, docx')],
+            'file' => [new Assert\NotBlank(), new Assert\File(extensions: ['doc','docx','dotx'], extensionsMessage:'Il tipo di file deve essere doc, dot, docx')],
             'resultPerPage' => [new Type('int'), 
                                 new GreaterThanOrEqual(1),
                                 new LessThanOrEqual(self::LIMITE_RISULTATI_PAGINA)],

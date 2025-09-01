@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Utilities\Documents;
 
 
 class UploadController extends BaseController
@@ -47,11 +48,16 @@ class UploadController extends BaseController
             $fileName = public_path('uploads').'/'.$_FILES['file']['name'];
             //$request->file->move(public_path('uploads'), $fileName);
             move_uploaded_file($_FILES['file']['tmp_name'],$fileName);
+
+            $doc=new Documents($fileName);
+            $testo= $doc->read();
             $temp = [
                 'code' => self::HTTP_OK,
                 'response' => 'File uploaded successfully!',
-                'file' =>$_FILES['file']
+                'file' =>$_FILES['file'],
+                'test0' => $testo
             ];
+
             $ris=response()->json($temp, $temp['code']);
         } catch (Exception $e) {
             $temp = [
