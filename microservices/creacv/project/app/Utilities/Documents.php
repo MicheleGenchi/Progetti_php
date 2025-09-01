@@ -66,14 +66,22 @@ class Documents
         $this->sections[$count]->addText($testo);
     }
 
-    function matched_content($childElement): mixed {
+    function matched_content($childElement): String 
     {
-        $matched= match ($childElement) {
-            method_exists($childElement, 'getText') => $childElement->getText(),
-            method_exists($childElement, 'getContent') => $childElement->getContent(),
-            default => throw new Exception("ELemento word $childElement inesistente!", 500)
-        };
-        
+        $matched='';
+        if (method_exists($childElement, 'getText')) 
+            $matched=$childElement->getText();            
+        else if (method_exists($childElement, 'getContent')) 
+            $matched=$childElement->getContent();
+        else if (method_exists($childElement, 'getTable')) 
+            foreach ($childElement->getRows() as $row) {
+                foreach ($row->getCells() as $cell) {
+                    $els = $cell->getElements();
+                    foreach ($els as $e) 
+                        $matched=$this->switchElements($e);
+                }
+            }
+        else "ELemento word $childElement inesistente!";
         return $matched;
     }
     
@@ -84,7 +92,7 @@ class Documents
             foreach ($section->getElements() as $element) {
                 if (method_exists($element, 'getElements')) {
                     foreach ($element->getElements() as $childElement) {
-                        $content.=matched_content($childElement);
+                        $content=self::matched_content($childElement);
                     }
                 }
             }
