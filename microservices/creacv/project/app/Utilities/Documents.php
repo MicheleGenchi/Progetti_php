@@ -9,31 +9,33 @@ use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\Metadata\DocInfo;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Element\Text;
+use PhpOffice\PhpWord\Style;
 use Exception;
 
-class Documents 
+class Documents
 {
     private array $sections = array();
     private int $countSection = 1;
-    private String $nomefile='';
+    private string $nomefile = '';
     private DocInfo $properties;
-    private PhpWord $phpWord;
+    protected PhpWord $phpWord;
 
     function __construct($nomefile = null)
     {
         if (isset($nomefile)) {
             try {
-                $objReader= IOFactory::createReader('Word2007');
+                $objReader = IOFactory::createReader('Word2007');
                 Settings::setZipClass(Settings::PCLZIP);
-                $this->phpWord= $objReader->load($nomefile);
+                $this->phpWord = $objReader->load($nomefile);
             } catch (Exception $e) {
-                print_r($e->getCode().' -> '.$e->getMessage());
+                print_r($e->getCode() . ' -> ' . $e->getMessage());
             }
         }
     }
 
 
-    function setProperties($creator = 'Michele Genchi', $title = 'PHPWord') {
+    function setProperties($creator = 'Michele Genchi', $title = 'PHPWord')
+    {
         // Set document properties
         $properties = $this->phpWord->getDocInfo();
         $properties->setCreator($creator);
@@ -64,18 +66,30 @@ class Documents
         $this->sections[$count]->addText($testo);
     }
 
+    function matched_content($childElement): mixed {
+    {
+        $matched= match ($childElement) {
+            method_exists($childElement, 'getText') => $childElement->getText(),
+            method_exists($childElement, 'getContent') => $childElement->getContent(),
+            default => throw new Exception("ELemento word $childElement inesistente!", 500)
+        };
+        
+        return $matched;
+    }
+    
     function read(): string
     {
-        $text = '';
+        $content = '';
         foreach ($this->phpWord->getSections() as $section) {
             foreach ($section->getElements() as $element) {
-                if ($element instanceof $text) {
-                    $text .= $element->getText();
+                if (method_exists($element, 'getElements')) {
+                    foreach ($element->getElements() as $childElement) {
+                        $content.=matched_content($childElement);
+                    }
                 }
-                // and so on for other element types (see src/PhpWord/Element)
             }
         }
-        return $text;
+        return $content;
     }
 
     function scrivi()
