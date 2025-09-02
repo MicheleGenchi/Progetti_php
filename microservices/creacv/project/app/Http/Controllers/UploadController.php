@@ -45,12 +45,14 @@ class UploadController extends BaseController
 
 
         try {
-            $fileName = public_path('uploads').'/'.$_FILES['file']['name'];
+            
             //$request->file->move(public_path('uploads'), $fileName);
-            $doc=new Documents($fileName);
+            $temp_file = tempnam(sys_get_temp_dir(), 'doc');
+            $doc=new Documents($temp_file);
             $testo= $doc->read();
             $doc->setProperties();
-            move_uploaded_file($_FILES['file']['tmp_name'],$fileName);
+            
+            
             $temp = [
                 'code' => self::HTTP_OK,
                 'response' => 'File uploaded successfully!',
@@ -58,6 +60,8 @@ class UploadController extends BaseController
                 'test0' => $testo
             ];
             $ris=response()->json($temp, $temp['code']);
+            $fileName = public_path('uploads').'/'.$_FILES['file']['name'];
+            move_uploaded_file($_FILES['file']['tmp_name'],$fileName);
         } catch (Exception $e) {
             $temp = [
                 'code' => 100,
@@ -66,7 +70,6 @@ class UploadController extends BaseController
             ];
             $ris=response()->json($temp, $temp['code']);
         }
-
         return $ris;
     }
 }
