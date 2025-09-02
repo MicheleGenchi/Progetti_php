@@ -47,17 +47,16 @@ class UploadController extends BaseController
         try {
             $fileName = public_path('uploads').'/'.$_FILES['file']['name'];
             //$request->file->move(public_path('uploads'), $fileName);
-            move_uploaded_file($_FILES['file']['tmp_name'],$fileName);
-
             $doc=new Documents($fileName);
             $testo= $doc->read();
+            $doc->setProperties();
+            move_uploaded_file($_FILES['file']['tmp_name'],$fileName);
             $temp = [
                 'code' => self::HTTP_OK,
                 'response' => 'File uploaded successfully!',
                 'file' =>$_FILES['file'],
                 'test0' => $testo
             ];
-
             $ris=response()->json($temp, $temp['code']);
         } catch (Exception $e) {
             $temp = [

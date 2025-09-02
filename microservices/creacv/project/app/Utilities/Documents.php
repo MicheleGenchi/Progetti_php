@@ -8,8 +8,6 @@ use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\Metadata\DocInfo;
 use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\Element\Text;
-use PhpOffice\PhpWord\Style;
 use Exception;
 
 class Documents
@@ -17,7 +15,6 @@ class Documents
     private array $sections = array();
     private int $countSection = 1;
     private string $nomefile = '';
-    private DocInfo $properties;
     protected PhpWord $phpWord;
 
     function __construct($nomefile = null)
@@ -66,22 +63,49 @@ class Documents
         $this->sections[$count]->addText($testo);
     }
 
-    function matched_content($childElement): String 
-    {
-        $matched='';
-        if (method_exists($childElement, 'getText')) 
-            $matched=$childElement->getText();            
-        else if (method_exists($childElement, 'getContent')) 
-            $matched=$childElement->getContent();
-        else if (method_exists($childElement, 'getTable')) 
-            foreach ($childElement->getRows() as $row) {
-                foreach ($row->getCells() as $cell) {
-                    $els = $cell->getElements();
-                    foreach ($els as $e) 
-                        $matched=$this->switchElements($e);
-                }
+    private function getTextFromTextRun($element) {
+        $text='';
+        for ($index = 0; $index < $element->countElements(); $index++) {
+            $textRunElement = $element->getElement($index);
+
+            switch (get_class($textRunElement)) {
+                case 'PhpOffice\PhpWord\Element\Text':
+                case 'PhpOffice\PhpWord\Element\TextRun':
+                    $text.= $textRunElement->getText();
+                    break;
+                case 'PhpOffice\PhpWord\Element\TextBreak':
+                    $text.='\n';
+                default:
+                    break;
             }
-        else "ELemento word $childElement inesistente!";
+        }
+        return $text;
+    }
+
+    private function iterateOverRows($table) {
+        $text='';
+        $rows = $table->getRows();
+        foreach ($rows as $row) {
+            foreach ($row->getCells() as $cell) {
+                $els = $cell->getElements();
+                    foreach ($els as $e) {
+                        $text.=$this->matched_content($e);
+                    }
+            }
+        }
+        return $text;
+    }
+
+
+
+    function matched_content($element): String 
+    {
+        $matched= match (get_class($element))
+        {
+            'PhpOffice\PhpWord\Element\TextRun' => $this->getTextFromTextRun($element),
+            'PhpOffice\PhpWord\Element\Table' => $this->iterateOverRows($element),
+            default => "ELemento word $element inesistente!"
+        };
         return $matched;
     }
     
@@ -89,11 +113,9 @@ class Documents
     {
         $content = '';
         foreach ($this->phpWord->getSections() as $section) {
-            foreach ($section->getElements() as $element) {
-                if (method_exists($element, 'getElements')) {
-                    foreach ($element->getElements() as $childElement) {
-                        $content=self::matched_content($childElement);
-                    }
+            foreach ($section->getElements() as $elements) {
+                foreach ($elements as $e) {
+                    $content.=$this->matched_content($e);
                 }
             }
         }
