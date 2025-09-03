@@ -59,11 +59,13 @@ class UploadController extends BaseController
                 'code' => self::HTTP_OK,
                 'response' => 'File uploaded successfully!',
                 'file' =>$_FILES['file'],
-                'testo' => $testo
+                'testo' => Documents::convertTextToArray($testo)
             ];
             $ris=response()->json($temp, $temp['code']);
             $fileName = public_path('uploads').'/'.$_FILES['file']['name'];
-            move_uploaded_file($temp_file,$fileName);
+            $filexmlSave=public_path('uploads').'/'.'test.xml';//$_FILES['file']['name'];
+            Documents::scrivixml($temp['testo'],$filexmlSave);
+            //move_uploaded_file($temp_file,$fileName);
         } catch (Exception $e) {
             $temp = [
                 'code' => 100,

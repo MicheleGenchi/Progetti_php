@@ -4,6 +4,7 @@ namespace App\Utilities;
 
 //require_once 'vendor/autoload.php'; // Include Composer's autoloader
 
+use App\Traits\HandlerWordTrait;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\Metadata\DocInfo;
@@ -12,6 +13,8 @@ use Exception;
 
 class Documents
 {
+    use HandlerWordTrait;
+
     private array $sections = array();
     private int $countSection = 1;
     private string $nomefile = '';
@@ -29,7 +32,6 @@ class Documents
             }
         }
     }
-
 
     function setProperties($creator = 'Michele Genchi', $title = 'PHPWord')
     {
@@ -63,54 +65,6 @@ class Documents
         $this->sections[$count]->addText($testo);
     }
 
-    private function getTextFromTextRun($element) {
-        $text='';
-            switch (get_class($element)) {
-                case 'PhpOffice\PhpWord\Element\TextRun':
-                    foreach ($element->getElements() as $e)
-                    {
-                        $text.= $this->getTextFromTextRun($e);
-                    }
-                    break;
-                case 'PhpOffice\PhpWord\Element\Text':
-                    $text.= (str_starts_with($element->getText(), '$_'))?$element->getText():'';
-                    break;
-                case 'PhpOffice\PhpWord\Element\TextBreak':
-                    $text.='';
-                default:
-                    break;
-            }
-        return $text;
-    }
-
-    private function iterateOverRows($table) {
-        $text='';
-        $rows = $table->getRows();
-        foreach ($rows as $row) {
-            foreach ($row->getCells() as $cell) {
-                $els = $cell->getElements();
-                    foreach ($els as $e) {
-                        $text.=$this->matched_element($e);
-                    }
-            }
-        }
-        return $text;
-    }
-
-
-
-    function matched_element($element): String 
-    {
-        $matched= match (get_class($element))
-        {
-            \PhpOffice\PhpWord\Element\TextRun::class => $this->getTextFromTextRun($element),
-            \PhpOffice\PhpWord\Element\Table::class => $this->iterateOverRows($element),
-            \PhpOffice\PhpWord\Element\TextBreak::class =>'',
-            default => "ELemento word $element inesistente!"
-        };
-        return $matched.';';
-    }
-    
     function read(): string
     {
         $content = '';
