@@ -65,20 +65,21 @@ class Documents
 
     private function getTextFromTextRun($element) {
         $text='';
-        for ($index = 0; $index < $element->countElements(); $index++) {
-            $textRunElement = $element->getElement($index);
-
-            switch (get_class($textRunElement)) {
-                case 'PhpOffice\PhpWord\Element\Text':
+            switch (get_class($element)) {
                 case 'PhpOffice\PhpWord\Element\TextRun':
-                    $text.= $textRunElement->getText();
+                    foreach ($element->getElements() as $e)
+                    {
+                        $text.= $this->getTextFromTextRun($e);
+                    }
+                    break;
+                case 'PhpOffice\PhpWord\Element\Text':
+                    $text.= (str_starts_with($element->getText(), '$_'))?$element->getText():'';
                     break;
                 case 'PhpOffice\PhpWord\Element\TextBreak':
-                    $text.='\n';
+                    $text.='';
                 default:
                     break;
             }
-        }
         return $text;
     }
 
@@ -89,7 +90,7 @@ class Documents
             foreach ($row->getCells() as $cell) {
                 $els = $cell->getElements();
                     foreach ($els as $e) {
-                        $text.=$this->matched_content($e);
+                        $text.=$this->matched_element($e);
                     }
             }
         }
@@ -98,25 +99,24 @@ class Documents
 
 
 
-    function matched_content($element): String 
+    function matched_element($element): String 
     {
         $matched= match (get_class($element))
         {
-            'PhpOffice\PhpWord\Element\TextRun' => $this->getTextFromTextRun($element),
-            'PhpOffice\PhpWord\Element\Table' => $this->iterateOverRows($element),
+            \PhpOffice\PhpWord\Element\TextRun::class => $this->getTextFromTextRun($element),
+            \PhpOffice\PhpWord\Element\Table::class => $this->iterateOverRows($element),
+            \PhpOffice\PhpWord\Element\TextBreak::class =>'',
             default => "ELemento word $element inesistente!"
         };
-        return $matched;
+        return $matched.';';
     }
     
     function read(): string
     {
         $content = '';
         foreach ($this->phpWord->getSections() as $section) {
-            foreach ($section->getElements() as $elements) {
-                foreach ($elements as $e) {
-                    $content.=$this->matched_content($e);
-                }
+            foreach ($section->getElements() as $element) {
+                $content.=$this->matched_element($element);
             }
         }
         return $content;
