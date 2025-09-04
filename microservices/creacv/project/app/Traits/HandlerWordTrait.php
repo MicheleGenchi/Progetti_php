@@ -28,12 +28,15 @@ trait HandlerWordTrait
 
     public static function convertTextToArray(string $text): array
     {
-        $array = ['field' => 'value'];
+        $array = [];
+        $app=[];
         $temparray = explode(";", $text);
         foreach ($temparray as $element) {
             $element = substr($element, 2);
-            if (!empty($element))
-                $array=array_merge($array, [$element => '']);
+            if (!empty($element)) {
+                $app=array_merge($app, [$element => '']);
+                $array[0]=$app;
+            }
         }
         return $array;
     }
@@ -42,11 +45,8 @@ trait HandlerWordTrait
     {
         foreach ($data as $key => $value) {
             if (is_array($value)) {
-                if (is_numeric($key)) {
-                    $key = 'item' . $key; //dealing with <0/>..<n/> issues
-                }
-                $subnode = $xml_data->addSection($key);
-                HandlerWordTrait::array_to_xml($value, $subnode);
+                $node=$xml_data->addChild("id", htmlspecialchars("$key"));
+                HandlerWordTrait::array_to_xml($value, $node);
             } else {
                 $xml_data->addChild("$key", htmlspecialchars("$value"));
             }

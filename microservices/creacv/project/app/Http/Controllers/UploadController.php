@@ -61,20 +61,19 @@ class UploadController extends BaseController
                 'file' =>$_FILES['file'],
                 'data' => Documents::convertTextToArray($testo)
             ];
-            $ris=response()->json($temp, $temp['code']);
             $fileName = public_path('uploads').'/'.$_FILES['file']['name'];
             $temparray=explode(".", $fileName);
             $fileXmlSave=$temparray[0].'.xml';//$_FILES['file']['name'];
-            Documents::scrivixml($temp['testo'],$fileXmlSave);
+            Documents::scrivixml($temp['data'],$fileXmlSave);
             //move_uploaded_file($temp_file,$fileName);
+            return response()->json($temp, $temp['code']);
         } catch (Exception $e) {
             $temp = [
                 'code' => 100,
                 'response' => $e->getMessage(),
                 'file' =>$_FILES['file']
             ];
-            $ris=response()->json($temp, $temp['code']);
+            return response()->json($temp, $temp['code']);
         }
-        return $ris;
     }
 }
