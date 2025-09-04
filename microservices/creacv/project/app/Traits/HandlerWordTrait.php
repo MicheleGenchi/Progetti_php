@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Type;
 use SimpleXMLElement;
-use DOMDocument;
 /**
  * Summary of ConstraintsTrait
  */
@@ -49,10 +48,6 @@ trait HandlerWordTrait
                 $subnode = $xml_data->addSection($key);
                 HandlerWordTrait::array_to_xml($value, $subnode);
             } else {
-/*                 $dom = new DOMDocument();
-                $contentTag  = $dom->createElement("$key",  $key);
-                $contentTag->appendChild($dom->createCDATASection($value));
- */                //$xml_data->addChild("$key", htmlspecialchars("$value"));
                 $xml_data->addChild("$key", htmlspecialchars("$value"));
             }
         }
@@ -67,7 +62,10 @@ trait HandlerWordTrait
         HandlerWordTrait::array_to_xml($data, $xml_data);
 
         //saving generated xml file; 
-        $result = $xml_data->asXML($fileName);
+        $dom = dom_import_simplexml($xml_data)->ownerDocument;
+        $dom->formatOutput = true;
+        $dom->save($fileName);
+        //$result = $xml_data->asXML($fileName);
     }
 
     private function getTextFromTextRun(object $element)
