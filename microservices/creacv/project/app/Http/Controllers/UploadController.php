@@ -59,7 +59,7 @@ class UploadController extends BaseController
                 'code' => self::HTTP_OK,
                 'response' => 'File uploaded successfully!',
                 'file' =>$_FILES['file'],
-                'testo' => Documents::convertTextToArray($testo)
+                'data' => Documents::convertTextToArray($testo)
             ];
             $ris=response()->json($temp, $temp['code']);
             $fileName = public_path('uploads').'/'.$_FILES['file']['name'];
