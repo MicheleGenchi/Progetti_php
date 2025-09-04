@@ -63,8 +63,9 @@ class UploadController extends BaseController
             ];
             $ris=response()->json($temp, $temp['code']);
             $fileName = public_path('uploads').'/'.$_FILES['file']['name'];
-            $filexmlSave=public_path('uploads').'/'.'test.xml';//$_FILES['file']['name'];
-            Documents::scrivixml($temp['testo'],$filexmlSave);
+            $temparray=explode(".", $fileName);
+            $fileXmlSave=$temparray[0].'.xml';//$_FILES['file']['name'];
+            Documents::scrivixml($temp['testo'],$fileXmlSave);
             //move_uploaded_file($temp_file,$fileName);
         } catch (Exception $e) {
             $temp = [

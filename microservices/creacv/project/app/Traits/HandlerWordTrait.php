@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Type;
 use SimpleXMLElement;
+use DOMDocument;
 /**
  * Summary of ConstraintsTrait
  */
@@ -45,10 +46,14 @@ trait HandlerWordTrait
                 if (is_numeric($key)) {
                     $key = 'item' . $key; //dealing with <0/>..<n/> issues
                 }
-                $subnode = $xml_data->appendXML($key);
+                $subnode = $xml_data->addSection($key);
                 HandlerWordTrait::array_to_xml($value, $subnode);
             } else {
-                $xml_data->appendXML("$key", htmlspecialchars("$value"));
+/*                 $dom = new DOMDocument();
+                $contentTag  = $dom->createElement("$key",  $key);
+                $contentTag->appendChild($dom->createCDATASection($value));
+ */                //$xml_data->addChild("$key", htmlspecialchars("$value"));
+                $xml_data->addChild("$key", htmlspecialchars("$value"));
             }
         }
     }
