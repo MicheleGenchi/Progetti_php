@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Exception;
+use League\CommonMark\Extension\CommonMark\Renderer\Block\HeadingRenderer;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -41,11 +42,11 @@ trait HandlerWordTrait
         return $array;
     }
 
-    public static function array_to_xml($data, &$xml_data)
+    public static function array_to_xml($data, SimpleXMLElement &$xml_data)
     {
         foreach ($data as $key => $value) {
             if (is_array($value)) {
-                $node=$xml_data->addChild("id", htmlspecialchars("$key"));
+                $node=$xml_data->addChild("fields");//, htmlspecialchars("$key"));
                 HandlerWordTrait::array_to_xml($value, $node);
             } else {
                 $xml_data->addChild("$key", htmlspecialchars("$value"));
