@@ -23,9 +23,9 @@
 
 <body>
     <div id="full">
-        <h1 style="text-align:center;">Scelta docx template</h1>
-        <form action="upload" id="formid" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
-            <input type="file" accept="application/msword" name="file" id="file">
+        <h1 style="text-align:center;">Scelta xml file</h1>
+        <form action="uploadXml" accept="text/xml" id="formid" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
+            <input type="file" name="file" id="file">
             <input type="submit" name="upload" value="Carica file">
         </form>
     </div>

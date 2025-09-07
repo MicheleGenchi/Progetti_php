@@ -12,21 +12,22 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Models\Document;
+use App\Models\Documents;
+use App\Models\XmlDocument;
 
 
-class UploadController extends BaseController
+class XmltoFormController extends BaseController
 {
     use WithRestUtilsTrait,
         ConstraintsTrait,
         DBUtilitiesTrait,
         WithValidationTrait;
 
-    public function upload(Request $request): JsonResponse
+    public function uploadXml(Request $request): JsonResponse
     {
        $constraints = new Assert\Collection([
             // the keys correspond to the keys in the input array
-            'file' => new Assert\Optional(self::getRules('file',['doc','docx','dotx'])),
+            'file' => new Assert\Optional(self::getRules('file', ['xml'])),
             'resultPerPage' => new Assert\Optional(self::getRules('resultPerPage')),
             'ordine' => new Assert\Optional(self::getRules('ordine'))
         ]);
@@ -43,26 +44,16 @@ class UploadController extends BaseController
             return response()->json($temp, $temp['code']);
         }
 
-
         try {
-            
             //$request->file->move(public_path('uploads'), $fileName);
-            $doc=new Document($_FILES['file']['tmp_name']);
-            $testo= $doc->read();
-            $doc->setProperties();
-            
-            
+            $doc=new XmlDocument($_FILES['file']['tmp_name']);
+            $xml= $doc->readXml();
             $temp = [
                 'code' => self::HTTP_OK,
                 'response' => 'File uploaded successfully!',
                 'file' =>$_FILES['file'],
-                'data' => Document::convertTextToArray($testo)
+                'xml' => $xml
             ];
-            $fileName = public_path('uploads').'/'.$_FILES['file']['name'];
-            $temparray=explode(".", $fileName);
-            $fileXmlSave=$temparray[0].'.xml';//$_FILES['file']['name'];
-            Document::scrivixml($temp['data'],$fileXmlSave);
-            //move_uploaded_file($temp_file,$fileName);
             return response()->json($temp, $temp['code']);
         } catch (Exception $e) {
             $temp = [

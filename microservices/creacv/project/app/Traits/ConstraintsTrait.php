@@ -23,15 +23,16 @@ trait ConstraintsTrait
      * @return array
      *  restituisce un array di assert per il campo richiesco $column
      */
-    public static function getRules(string $column): array
+    public static function getRules(string $column, ?array $extensionFiles=null): array
     {
         $matched= match ($column) {
-            'file' => [new Assert\NotBlank(), new Assert\File(extensions: ['doc','docx','dotx'], extensionsMessage:'Il tipo di file deve essere doc, dot, docx')],
+            'file' => [ new Assert\NotBlank(), 
+                        new Assert\File(extensions: $extensionFiles, extensionsMessage:'Il tipo di file deve essere ')
+                      ],
             'resultPerPage' => [new Type('int'), 
                                 new GreaterThanOrEqual(1),
                                 new LessThanOrEqual(self::LIMITE_RISULTATI_PAGINA)],
-            'ordine' => [ new Assert\All(new Assert\Choice(['ASC', 'DESC']))
-            ],
+            'ordine' => [ new Assert\All(new Assert\Choice(['ASC', 'DESC']))],
             # cerchi di validare un campo che in realtà non ha una validazione
             default => throw new Exception("Campo $column inesistente!", 500)
         };

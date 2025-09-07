@@ -1,27 +1,30 @@
 <?php
 
-namespace App\Utilities;
+namespace App\Models;
 
 //require_once 'vendor/autoload.php'; // Include Composer's autoloader
 
 use App\Traits\HandlerWordTrait;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use PharIo\Manifest\Extension;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\Metadata\DocInfo;
 use PhpOffice\PhpWord\IOFactory;
 use Exception;
 
-class Documents
+class Document
 {
     use HandlerWordTrait;
 
     private array $sections = array();
     private int $countSection = 1;
-    private string $nomefile = '';
     protected PhpWord $phpWord;
 
-    function __construct($nomefile = null)
+    function __construct(?String $nomefile = null)
     {
+        rename($nomefile ,$nomefile.'.docx');
+        $nomefile.='.docx';
         if (isset($nomefile)) {
             try {
                 $objReader = IOFactory::createReader('Word2007');
@@ -65,7 +68,7 @@ class Documents
         $this->sections[$count]->addText($testo);
     }
 
-    function read(): string
+    function read(): String
     {
         $content = '';
         foreach ($this->phpWord->getSections() as $section) {
@@ -76,11 +79,12 @@ class Documents
         return $content;
     }
 
-    function scrivi()
+    function scrivi(String $nomefile)
     {
         $writer = IOFactory::createWriter($this->phpWord, 'Word2007'); // Or 'OOXML'
-        $writer->save($this->nomefile);
+        $writer->save($nomefile);
     }
+
 }
 
 
