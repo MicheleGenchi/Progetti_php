@@ -34,21 +34,12 @@ class XmlDocument
         }
     }
 
-    function iterateNode(SimpleXMLElement $node, string &$content)
-    {
-        while ($node->hasChildren()) {
-            $content.=$node->getName();
-            $node->next();
-        }
-        return $content;
-    }
-    function readXml(): string
+    function readXml(): String
     {
         $content = '';
         if (isset($this->xml)) {
             $xml = $this->xml;
-            $array=json_decode(json_encode((array) $xml),true);//$this->iterateNode($xml, $content);
-            return implode("\n", (Array) $array);
+            return json_encode((array) $xml, JSON_PRETTY_PRINT);
         } else {
             return "xml object not found";
         }
