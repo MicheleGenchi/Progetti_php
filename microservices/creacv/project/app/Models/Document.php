@@ -23,17 +23,7 @@ class Document
 
     function __construct(?String $nomefile = null)
     {
-        rename($nomefile ,$nomefile.'.docx');
-        $nomefile.='.docx';
-        if (isset($nomefile)) {
-            try {
-                $objReader = IOFactory::createReader('Word2007');
-                Settings::setZipClass(Settings::PCLZIP);
-                $this->phpWord = $objReader->load($nomefile);
-            } catch (Exception $e) {
-                print_r($e->getCode() . ' -> ' . $e->getMessage());
-            }
-        }
+    
     }
 
     function setProperties($creator = 'Michele Genchi', $title = 'PHPWord')
@@ -68,15 +58,26 @@ class Document
         $this->sections[$count]->addText($testo);
     }
 
-    function read(): String
+    function read($nomefile): Array
     {
+        rename($nomefile ,$nomefile.'.docx');
+        $nomefile.='.docx';
+        if (isset($nomefile)) {
+            try {
+                $objReader = IOFactory::createReader('Word2007');
+                Settings::setZipClass(Settings::PCLZIP);
+                $this->phpWord = $objReader->load($nomefile);
+            } catch (Exception $e) {
+                return ['code' => $e->getCode(), 'errore' => $e->getMessage()];
+            }
+        }
         $content = '';
         foreach ($this->phpWord->getSections() as $section) {
             foreach ($section->getElements() as $element) {
                 $content.=$this->matched_element($element);
             }
         }
-        return $content;
+        return ['code' => 200, 'testo' => $content];
     }
 
     function scrivi(String $nomefile)

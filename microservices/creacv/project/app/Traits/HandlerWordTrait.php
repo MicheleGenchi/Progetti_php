@@ -14,15 +14,17 @@ use SimpleXMLElement;
 /**
  * Summary of ConstraintsTrait
  */
+define("SYMBOLMATCH",'$_');
 trait HandlerWordTrait
 {
+ 
 
     private function elabora(string $text): string
     {
         $array = explode(' ', $text);
         $temptext = '';
         foreach ($array as $element) {
-            $temptext = (str_starts_with($element, '$_')) ? $element . ';' : '';
+            $temptext = (str_starts_with($element, SYMBOLMATCH)) ? $element . ';' : '';
         }
         return $temptext;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Routing\Controller as BaseController;
 use App\Traits\WithRestUtilsTrait;
 use App\Traits\ConstraintsTrait;
@@ -24,9 +25,9 @@ class UploadController extends BaseController
 
     public function upload(Request $request): JsonResponse
     {
-       $constraints = new Assert\Collection([
+        $constraints = new Assert\Collection([
             // the keys correspond to the keys in the input array
-            'file' => new Assert\Optional(self::getRules('file',['doc','docx','dotx'])),
+            'file' => new Assert\Optional(self::getRules('file', ['.doc', '.docx', '.dotx'])),
             'resultPerPage' => new Assert\Optional(self::getRules('resultPerPage')),
             'ordine' => new Assert\Optional(self::getRules('ordine'))
         ]);
@@ -38,37 +39,39 @@ class UploadController extends BaseController
             $temp = [
                 'code' => self::HTTP_BAD_REQUEST,
                 'response' => ["errors" => $errors],
-                'file' =>$_FILES['file']
+                'file' => $_FILES['file']
             ];
             return response()->json($temp, $temp['code']);
         }
 
 
         try {
-            
             //$request->file->move(public_path('uploads'), $fileName);
-            $doc=new Document($_FILES['file']['tmp_name']);
-            $testo= $doc->read();
+            $doc = new Document();
+            $response = $doc->read($_FILES['file']['tmp_name']);
             $doc->setProperties();
-            
-            
-            $temp = [
-                'code' => self::HTTP_OK,
-                'response' => 'File uploaded successfully!',
-                'file' =>$_FILES['file'],
-                'data' => Document::convertTextToArray($testo)
-            ];
-            $fileName = public_path('uploads').'/'.$_FILES['file']['name'];
-            $temparray=explode(".", $fileName);
-            $fileXmlSave=$temparray[0].'.xml';//$_FILES['file']['name'];
-            Document::scrivixml($temp['data'],$fileXmlSave);
-            //move_uploaded_file($temp_file,$fileName);
-            return response()->json($temp, $temp['code']);
+
+            if ($response['code'] != 200)
+                throw new InvalidFormatException();
+            else {
+                $temp = [
+                    'code' => self::HTTP_OK,
+                    'response' => 'File uploaded successfully!',
+                    'file' => $_FILES['file'],
+                    'data' => Document::convertTextToArray($response['testo'])
+                ];
+                $fileName = public_path('uploads') . '/' . $_FILES['file']['name'];
+                $temparray = explode(".", $fileName);
+                $fileXmlSave = $temparray[0] . '.xml';//$_FILES['file']['name'];
+                Document::scrivixml($temp['data'], $fileXmlSave);
+                //move_uploaded_file($temp_file,$fileName);
+                return response()->json($temp, $temp['code']);
+            }
         } catch (Exception $e) {
             $temp = [
                 'code' => 100,
                 'response' => $e->getMessage(),
-                'file' =>$_FILES['file']
+                'file' => $_FILES['file']
             ];
             return response()->json($temp, $temp['code']);
         }

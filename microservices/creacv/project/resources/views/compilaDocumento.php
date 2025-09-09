@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Scelta template</title>
+    <title>Compila Dcoumento</title>
     <style type="text/css">
         * {
             margin: 0;
@@ -23,9 +23,11 @@
 
 <body>
     <div id="full">
-        <h1 style="text-align:center;">Scelta docx template</h1>
-        <form action="upload" id="formid" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
-            <input type="file" accept=".docx, .doc" name="file" id="file">
+        <h1 style="text-align:center;">Compila Documento</h1>
+        <h4 style="text-align:center;">Seleziona un template e seleziona un file xml con i dati compilativi</h4>
+        <form action="compilaDocumento" id="formid" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
+            <input type="file" accept=".docx, .doc" name="file_template" id="file">
+            <input type="file" accept=".xml" name="file_xml" id="file">
             <input type="submit" name="upload" value="Carica file">
         </form>
     </div>

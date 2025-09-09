@@ -27,3 +27,4 @@ Route::view('sceltaTemplate', 'sceltaTemplate');
 Route::post('upload', [UploadController::class, 'upload']);
 Route::view('sceltaXml', 'sceltaXml');
 Route::post('uploadXml', [XmltoFormController::class, 'uploadXml']);
+Route::view('compilaDocumento',[XmltoFormController::class, 'compilaDocumento']);
