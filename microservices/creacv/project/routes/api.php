@@ -3,7 +3,8 @@
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\UploadController;
-use App\Http\Controllers\XmltoFormController;
+use App\Http\Controllers\XmlController;
+use App\Http\Controllers\AutoFormController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -26,5 +27,5 @@ Route::get('testconnessione', [Controller::class, 'testconnessione']);
 Route::view('sceltaTemplate', 'sceltaTemplate');
 Route::post('upload', [UploadController::class, 'upload']);
 Route::view('sceltaXml', 'sceltaXml');
-Route::post('uploadXml', [XmltoFormController::class, 'uploadXml']);
-Route::view('compilaDocumento',[XmltoFormController::class, 'compilaDocumento']);
+Route::post('uploadXml', [XmlController::class, 'uploadXml']);
+Route::view('compilaDocumento',[AutoFormController::class, 'compilaDocumento']);
