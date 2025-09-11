@@ -47,21 +47,11 @@ class AutoFormController extends BaseController
         }
 
         try {
-            //$request->file->move(public_path('uploads'), $fileName);
-            $doc = new XmlDocument();
-            $xml = $doc->readXml($_FILES['file']['tmp_name']);
-            $temp = [
-                'code' => self::HTTP_OK,
-                'fileTemplate' => $request['file_template'],
-                'fileXml' => $request['file_xml']
-            ];
-
-            
-
-            $doc = new XmlDocument();
-            $response = $doc->compilaDocumento($request->all);
-            array_push($temp, ['response' => $response]);
-            return response()->json($temp, $temp['code']);
+            //request UploadController upload
+            $responseDoc=self::callHttp("http://host.docker.internal:8000/api/upload", ['form_parameters' => $request->file_template]);
+            //request XmlController uploadXml
+            $responseXml=self::callHttp("http://host.docker.internal:8000/api/uploadXml", ['form_parameters' => $request->file_xml]);
+            return response()->json(["document" => $responseDoc, "xml" => $responseXml], self::HTTP_OK);
         } catch (Exception $e) {
             $temp = [
                 'code' => $e->getCode(),
@@ -70,7 +60,7 @@ class AutoFormController extends BaseController
                 'fileXml' => $_FILES['file_xml'],
                 'errors' => ['code' => $e->getCode(), 'message' => $e->getMessage()]
             ];
-            return response()->json($temp, $temp['code']);
+            return response()->json($temp, $e->getCode());
         }
     }
 }
