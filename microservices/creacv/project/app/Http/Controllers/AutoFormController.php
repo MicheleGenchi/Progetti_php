@@ -48,9 +48,9 @@ class AutoFormController extends BaseController
 
         try {
             //request UploadController upload
-            $responseDoc=self::callHttp("http://host.docker.internal:8000/api/upload", ['form_parameters' => $request->file_template]);
+            $responseDoc=self::callHttp("http://localhost:8000/api/upload", ['form_params' => $request->file_template]);
             //request XmlController uploadXml
-            $responseXml=self::callHttp("http://host.docker.internal:8000/api/uploadXml", ['form_parameters' => $request->file_xml]);
+            $responseXml=self::callHttp("http://localhost:8000/api/uploadXml", ['form_params' => $request->file_xml]);
             return response()->json(["document" => $responseDoc, "xml" => $responseXml], self::HTTP_OK);
         } catch (Exception $e) {
             $temp = [

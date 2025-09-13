@@ -6,6 +6,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Client\Response;
+use GuzzleHttp\RequestOptions;
 
 trait WithRestUtilsTrait
 {
@@ -189,21 +190,17 @@ trait WithRestUtilsTrait
         return $code;
     }
 
-    public static function callHttp(String $url, Array $parameters): Array
+    public static function callHttp(string $url, array $parameters): array
     {
         $client = new Client();
         try {
-        // Create a POST request
-        $response = $client->request(
-            'POST',
-            $url,
-            [
-                $parameters
-            ]
-        );
-    } catch (GuzzleException $ge) {
-        return ['code' => $ge->getCode(), 'error' => $ge->getMessage()];
-    }
+            // Create a POST request
+            $response = $client->post('url', [
+            RequestOptions::JSON => $parameters
+]);
+        } catch (GuzzleException $ge) {
+            return ['code' => $ge->getCode(), 'error' => $ge->getMessage()];
+        }
 
         // Parse the response object, e.g. read the headers, body, etc.
         $headers = $response->getHeaders();
