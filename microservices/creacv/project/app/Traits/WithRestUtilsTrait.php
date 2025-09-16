@@ -190,14 +190,20 @@ trait WithRestUtilsTrait
         return $code;
     }
 
-    public static function callHttp(string $url, array $parameters): array
+    public static function callHttp(string $tipo, string $url, array $parameters): array
     {
+        //$response=null;
         $client = new Client();
         try {
             // Create a POST request
-            $response = $client->post('url', [
-            RequestOptions::JSON => $parameters
-]);
+            switch ($tipo):
+                case 'post': $response = $client->post($url, [RequestOptions::FORM_PARAMS => $parameters]);break;
+                case 'get': $response = $client->get($url, [RequestOptions::QUERY => $parameters]);break;
+                case 'put': $response = $client->put($url, [RequestOptions::FORM_PARAMS => $parameters]);break;
+                case'delete': $response = $client->delete($url, [RequestOptions::FORM_PARAMS => $parameters]);break;
+                case 'view': $response = $client->get($url, []);break;
+                default: $response = "callhttp $tipo inesistente!";
+            endswitch;
         } catch (GuzzleException $ge) {
             return ['code' => $ge->getCode(), 'error' => $ge->getMessage()];
         }
@@ -205,7 +211,6 @@ trait WithRestUtilsTrait
         // Parse the response object, e.g. read the headers, body, etc.
         $headers = $response->getHeaders();
         $body = $response->getBody();
-
         // Output headers and body for debugging purposes
         return ['header' => $headers, 'body' => $body];
     }

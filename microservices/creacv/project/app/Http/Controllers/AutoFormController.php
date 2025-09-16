@@ -23,7 +23,7 @@ class AutoFormController extends BaseController
         DBUtilitiesTrait,
         WithValidationTrait;
 
-    public function compilaDocumento(Request $request): JsonResponse
+    public function compilaDocumento(Request $request): JsonResponse|RedirectResponse
     {
         $constraints = new Assert\Collection([
             // the keys correspond to the keys in the input array
@@ -47,20 +47,21 @@ class AutoFormController extends BaseController
         }
 
         try {
+            $url="http://localhost:8000/"; 
             //request UploadController upload
-            $responseDoc=self::callHttp("http://localhost:8000/api/upload", ['form_params' => $request->file_template]);
+            $responseDoc=self::callHttp("post",$url."api/upload", ['form_params' => $request->file_template]);
             //request XmlController uploadXml
-            $responseXml=self::callHttp("http://localhost:8000/api/uploadXml", ['form_params' => $request->file_xml]);
-            return response()->json(["document" => $responseDoc, "xml" => $responseXml], self::HTTP_OK);
+            $responseXml=self::callHttp("post", $url."api/uploadXml", ['form_params' => $request->file_xml]);
+            return response()->json(["document" => $responseDoc, "xml" => $responseXml], self::HTTP_OK); 
         } catch (Exception $e) {
             $temp = [
                 'code' => $e->getCode(),
                 'response' => $e->getMessage(),
                 'fileTemplate' => $_FILES['file_template'],
                 'fileXml' => $_FILES['file_xml'],
-                'errors' => ['code' => $e->getCode(), 'message' => $e->getMessage()]
+                'errors' => ['code' => $e->getCode(), 'message' => "$url problem\n".$e->getMessage()]
             ];
-            return response()->json($temp, $e->getCode());
+            return response()->json($temp['$errors'], $temp['code']);
         }
     }
 }
