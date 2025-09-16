@@ -20,10 +20,11 @@ echo %NOMEPROGETTO% %PORTA%
 echo FROM php:8.2.4-fpm
 echo RUN pecl install xdebug
 echo RUN docker-php-ext-enable xdebug
-echo RUN curl -sS https://getcomposer.org/installer ^| php -- --install-dir=/usr/local/bin --filename=composer
+echo RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 echo RUN apt update -y \
-echo        ^&^& apt install git libzip-dev zsh -y 
+echo       ^&^& apt install git libzip-dev zsh -y
 echo RUN docker-php-ext-install pdo pdo_mysql zip
+echo RUN ln -sf /bin/bash /bin/sh
 echo RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.5/zsh-in-docker.sh)"
 echo WORKDIR /%NOMEPROGETTO%
 )>Dockerfile
