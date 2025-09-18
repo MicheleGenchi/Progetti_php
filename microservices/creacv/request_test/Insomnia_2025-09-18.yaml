@@ -1,0 +1,135 @@
+type: collection.insomnia.rest/5.0
+name: Progetti_php
+meta:
+  id: wrk_abd6006357334340a3b5a7cec8701896
+  created: 1757926876229
+  modified: 1757926876229
+  description: ""
+collection:
+  - name: creacv
+    meta:
+      id: fld_44a67fd8c59844fd84aaaffa4df115ec
+      created: 1757954829489
+      modified: 1758224697602
+      sortKey: -1757954829489
+      description: ""
+    children:
+      - url: http://localhost:8000/api/upload
+        name: upload document
+        meta:
+          id: req_788d8407fb2141d0bbf298c3687b442a
+          created: 1757619710830
+          modified: 1757954903057
+          isPrivate: false
+          description: ""
+          sortKey: -1757954868848
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: file
+              value: ""
+              description: ""
+              disabled: false
+              id: pair_497b433bda6a441883be7877c6caa8c8
+              fileName: /run/user/1000/doc/91131090/prova.docx
+              type: file
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/11.5.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8000/api/compilaDocumento
+        name: compila documento
+        meta:
+          id: req_9b149698b019459fa26d0bb09276bb91
+          created: 1757954912949
+          modified: 1758224607166
+          isPrivate: false
+          description: ""
+          sortKey: -1744390519758
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: file_template
+              value: ""
+              description: ""
+              disabled: false
+              id: pair_497b433bda6a441883be7877c6caa8c8
+              fileName: /run/user/1000/doc/c83b5521/prova.docx
+              type: file
+            - id: pair_bbc35dfd812547a0bb85d10aa741f06b
+              name: file_xml
+              value: ""
+              description: ""
+              disabled: false
+              type: file
+              fileName: /run/user/1000/doc/3ea4f6cd/prova.xml
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/11.5.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8000/api/uploadXml
+        name: upload xml
+        meta:
+          id: req_f718dd50e7c64b8c92dda53428e133e2
+          created: 1758224623658
+          modified: 1758224655104
+          isPrivate: false
+          description: ""
+          sortKey: -1751172694303
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - id: pair_bbc35dfd812547a0bb85d10aa741f06b
+              name: file
+              value: ""
+              description: ""
+              disabled: false
+              type: file
+              fileName: /run/user/1000/doc/3ea4f6cd/prova.xml
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/11.5.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_1a7c45b7e6d94cd0b00f849fcfb70f84
+    created: 1730826048106
+    modified: 1730826048106
+environments:
+  name: Base Environment
+  meta:
+    id: env_3934a73451ee46e5a945ad55fe8566bb
+    created: 1730826048101
+    modified: 1730826048101
+    isPrivate: false
