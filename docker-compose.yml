@@ -38,7 +38,7 @@ services:
       - db-cv
     image: phpmyadmin/phpmyadmin
     env_file:
-      - microservices/db/.env.db-geo
+      - microservices/db/.env.db-cv
     ports:
       - 8081:80
     environment:
