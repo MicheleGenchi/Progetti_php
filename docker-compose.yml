@@ -12,7 +12,9 @@ services:
       - --innodb_use_native_aio=0
     container_name: db-test
     ports:
-      - 33081:3306
+      - 33081:3306ù
+    volumes:
+      - ./microservices/db/data/test:/var/lib/mysql
 
   # DB datacv
   db-cv:
@@ -27,19 +29,20 @@ services:
     container_name: db-cv
     ports:
       - 33082:3306
-
+    volumes:
+      - ./microservices/db/data/datacv:/var/lib/mysql
+      
   phpmyadmin:
     container_name: phpmyadmin
     depends_on:
-      - db-test
       - db-cv
     image: phpmyadmin/phpmyadmin
+    env_file:
+      - microservices/db/.env.db-geo
     ports:
       - 8081:80
     environment:
       PMA_HOST: db-cv
-      MYSQL_ROOT_PASSWORD: root
-
     
 # microservice creacv
   creacv:
