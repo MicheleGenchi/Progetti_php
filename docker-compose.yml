@@ -14,7 +14,7 @@ services:
     ports:
       - 33081:3306
     volumes:
-      - ./microservices/db/data:/var/lib/mysql
+      - ./microservices/db/data/test:/var/lib/mysql
 
   # DB datacv
   db-cv:
