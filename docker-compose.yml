@@ -12,7 +12,7 @@ services:
       - --innodb_use_native_aio=0
     container_name: db-test
     ports:
-      - 33081:3306ù
+      - 33081:3306
     volumes:
       - ./microservices/db/data/test:/var/lib/mysql
 
