@@ -22,7 +22,8 @@
 </head>
 
 <body>
-    <div id="full">
-        <h1 style="text-align:center;">Home</h1>
-    </div>
+    <?php
+        phpinfo();
+        exit;
+    ?>
 </body>

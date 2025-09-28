@@ -39,4 +39,22 @@ class Controller extends BaseController
         }
         return response()->json($ris, $ris['code']);
     }
+
+    public function allheader(): JsonResponse
+    {
+        $ris=[];
+        try {
+            $headers =  getallheaders();
+            foreach($headers as $key=>$val){
+                array_push($ris, [$key . ': ' . $val . '<br>']);
+            }
+        } catch (Exception $e) {
+            $code = (int) $e->getCode();
+            $ris = [
+                'response' => $e->getMessage(),
+                'code' => self::validateErrorCode($code)
+            ];
+        }
+        return response()->json($ris, 200);
+    }
 }
