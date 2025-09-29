@@ -13,8 +13,6 @@ services:
     container_name: db-test
     ports:
       - 33081:3306
-    volumes:
-      - ./microservices/db/data/test:/var/lib/mysql
 
   # DB datacv
   db-cv:
@@ -30,7 +28,7 @@ services:
     ports:
       - 33082:3306
     volumes:
-      - ./microservices/db/data:/var/lib/mysql
+      - ./microservices/db/data:/db/data
       
   phpmyadmin:
     container_name: phpmyadmin
