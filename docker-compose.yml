@@ -1,3 +1,7 @@
+volumes:
+  db-data:
+  db-test:
+
 services:
 
   # DB TEST
@@ -13,6 +17,8 @@ services:
     container_name: db-test
     ports:
       - 33081:3306
+    volumes:
+      - db-test:/var/lib/mysql
 
   # DB datacv
   db-cv:
@@ -28,8 +34,7 @@ services:
     ports:
       - 33082:3306
     volumes:
-      - ./microservices/db/data:/db/data
-      
+      - db-data:/var/lib/mysql
   phpmyadmin:
     container_name: phpmyadmin
     depends_on:
@@ -41,7 +46,7 @@ services:
       - 8081:80
     environment:
       PMA_HOST: db-cv
-    
+
 # microservice creacv
   creacv:
     container_name: creacv
