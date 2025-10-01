@@ -51,9 +51,9 @@ class AutoFormController extends BaseController
             $urldoc=$url."api/upload";
             $urlxml=$url."api/uploadXml";
             //request UploadController upload
-            $responseDoc=self::callHttp("post",$urldoc, ['form_params' => $request->file_template]);
+            $responseDoc=self::callHttp("post",$urldoc, ['form_params' => $request->filedoc]);
             //request XmlController uploadXml
-            $responseXml=self::callHttp("post",$urlxml, ['form_params' => $request->file_xml]);
+            $responseXml=self::callHttp("post",$urlxml, ['form_params' => $request->filexml]);
             return response()->json(["document" => $responseDoc, "xml" => $responseXml], self::HTTP_OK); 
         } catch (Exception $e) {
             $temp = [
