@@ -1,5 +1,5 @@
 microservices/db/data
-.vscode/launch.json
-conf/.vscode/launch.json
-microservices/creacv/.vscode/launch.json
-microservices/template/.vscode/launch.json
+.vscode/*
+conf/.vscode/*
+microservices/creacv/.vscode/*
+microservices/template/.vscode/*
