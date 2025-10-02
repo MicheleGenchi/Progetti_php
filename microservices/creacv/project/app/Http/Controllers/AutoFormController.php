@@ -47,20 +47,24 @@ class AutoFormController extends BaseController
         }
 
         try {
-            $url="http://172.17.0.1:8000/";
+            $url="http://172.17.0.1:8000/"; //ip docker da ifconfig
             $urldoc=$url."api/upload";
             $urlxml=$url."api/uploadXml";
+            $files = $_FILES;
             //request UploadController upload
-            $responseDoc=self::callHttp("post",$urldoc, ['form_params' => $_FILES['filedoc']]);
+            $responseDoc=self::callHttp("post",$urldoc, ['form_params' => $files['filedoc']]);
             //request XmlController uploadXml
-            $responseXml=self::callHttp("post",$urlxml, ['form_params' => $_FILES['filexml']]);
+            $responseXml=self::callHttp("post",$urlxml, ['form_params' => $files['filexml']]);
+
+            // TODO : codice che sostituisce tutte le che iniziano con "$_" prendendo "dall'xml"
+
             return response()->json(["document" => $responseDoc, "xml" => $responseXml], self::HTTP_OK); 
         } catch (Exception $e) {
             $temp = [
                 'code' => $e->getCode(),
                 'response' => $e->getMessage(),
-                'filedoc' => $_FILES['filedoc'],
-                'filexml' => $_FILES['filexml'],
+                'filedoc' => $files['filedoc'],
+                'filexml' => $files['filexml'],
                 'errors' => ['code' => $e->getCode(), 'message' => "$url problem\n".$e->getMessage()]
             ];
             return response()->json($temp['errors'], status: self::HTTP_OK);
