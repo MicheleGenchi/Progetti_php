@@ -27,8 +27,8 @@ class AutoFormController extends BaseController
     {
         $constraints = new Assert\Collection([
             // the keys correspond to the keys in the input array
-            'file_template' => new Assert\Optional(self::getRules('file', ['.doc', '.docx', 'dotx'])),
-            'file_xml' => new Assert\Optional(self::getRules('file', ['.xml'])),
+            'filedoc' => new Assert\Optional(self::getRules('file', ['.doc', '.docx', 'dotx'])),
+            'filexml' => new Assert\Optional(self::getRules('file', ['.xml'])),
             'resultPerPage' => new Assert\Optional(self::getRules('resultPerPage')),
             'ordine' => new Assert\Optional(self::getRules('ordine'))
         ]);
@@ -39,31 +39,31 @@ class AutoFormController extends BaseController
             $temp = [
                 'code' => self::HTTP_BAD_REQUEST,
                 'response' => ["errors" => $errors],
-                'fileTemplate' => $_FILES['file_template'],
-                'fileXml' => $_FILES['file_xml'],
+                'filedoc' => $_FILES['filedoc'],
+                'filexml' => $_FILES['filexml'],
                 'errors' => $errors
             ];
             return response()->json($temp, $temp['code']);
         }
 
         try {
-            $url="http://localhost:8000/"; 
+            $url="http://172.17.0.1:8000/";
             $urldoc=$url."api/upload";
             $urlxml=$url."api/uploadXml";
             //request UploadController upload
-            $responseDoc=self::callHttp("post",$urldoc, ['form_params' => $request->filedoc]);
+            $responseDoc=self::callHttp("post",$urldoc, ['form_params' => $_FILES['filedoc']]);
             //request XmlController uploadXml
-            $responseXml=self::callHttp("post",$urlxml, ['form_params' => $request->filexml]);
+            $responseXml=self::callHttp("post",$urlxml, ['form_params' => $_FILES['filexml']]);
             return response()->json(["document" => $responseDoc, "xml" => $responseXml], self::HTTP_OK); 
         } catch (Exception $e) {
             $temp = [
                 'code' => $e->getCode(),
                 'response' => $e->getMessage(),
-                'fileTemplate' => $_FILES['file_template'],
-                'fileXml' => $_FILES['file_xml'],
+                'filedoc' => $_FILES['filedoc'],
+                'filexml' => $_FILES['filexml'],
                 'errors' => ['code' => $e->getCode(), 'message' => "$url problem\n".$e->getMessage()]
             ];
-            return response()->json($temp['$errors'], $temp['code']);
+            return response()->json($temp['errors'], status: self::HTTP_OK);
         }
     }
 }
