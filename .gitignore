@@ -1,5 +1,7 @@
-microservices/db/data
-.vscode/*
-conf/.vscode/*
-microservices/creacv/.vscode/*
-microservices/template/.vscode/*
+/microservices/db/data
+/.vscode
+/conf/.vscode
+/microservices/creacv/.vscode
+/microservices/template/.vscode
+/.vscode
+
