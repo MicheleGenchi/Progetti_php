@@ -25,7 +25,10 @@
     <div id="full">
         <h1 style="text-align:center;">Scelta xml file</h1>
         <form action="uploadXml" id="formid" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
-            <input type="file" accept=".xml" name="file" id="file">
+            <div class="line">
+                <label for="file">Xml : </label>
+                <input type="file" accept=".xml" name="file" id="file">
+            </div>
             <input type="submit" name="upload" value="Carica file">
         </form>
     </div>

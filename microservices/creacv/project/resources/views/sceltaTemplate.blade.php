@@ -25,7 +25,10 @@
     <div id="full">
         <h1 style="text-align:center;">Scelta docx template</h1>
         <form action="upload" id="formid" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
-            <input type="file" accept=".docx, .doc" name="file" id="file">
+            <div class="line"> 
+                <label for="file">Documento : </label>
+                <input type="file" accept=".docx, .doc" name="file" id="file">
+            </div>
             <input type="submit" name="upload" value="Carica file">
         </form>
     </div>
