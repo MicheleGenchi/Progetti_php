@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Models\Documents;
+use App\Models\Document;
 use App\Models\XmlDocument;
 
 
@@ -57,8 +57,12 @@ class AutoFormController extends BaseController
             $responseXml=self::callHttp("post",$urlxml, ['form_params' => $files['filexml']]);
 
             // TODO : codice che sostituisce tutte le che iniziano con "$_" prendendo "dall'xml"
+            //$doc=new Document();
+            //$doc->scrivi($responseDoc[],$responseXml['response']['mappa']);
+            
 
-            return response()->json(["document" => $responseDoc, "xml" => $responseXml], self::HTTP_OK); 
+
+            return response()->json(["document" => json_encode($responseDoc), "xml" => json_encode($responseXml)], self::HTTP_OK); 
         } catch (Exception $e) {
             $temp = [
                 'code' => $e->getCode(),

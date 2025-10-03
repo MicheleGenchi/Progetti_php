@@ -80,12 +80,15 @@ class Document
         return ['code' => 200, 'testo' => $content];
     }
 
-    function scrivi(String $nomefile)
+    function scrivi(String $nomefile, Array $words)
     {
+        $response = $this->read($_FILES['file']['tmp_name']);
+        foreach ($words as $key => $value) {
+            $response['testo'] = str_replace($key, $value, $response['testo']);
+        }
         $writer = IOFactory::createWriter($this->phpWord, 'Word2007'); // Or 'OOXML'
         $writer->save($nomefile);
     }
-
 }
 
 
