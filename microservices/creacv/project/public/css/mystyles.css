@@ -5,11 +5,12 @@
 }
 
 #full {
-    margin: 20px;
+    margin: 25%;
     padding: 20px;
     background: #0f0;
     height: 100%;
     vertical-align: middle;
+    width:50%;
 }
 
 .line {
