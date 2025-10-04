@@ -1,24 +1,10 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Compila Dcoumento</title>
-    <style type="text/css">
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-        #full {
-            margin: 0px;
-            padding: 0px;
-            background: #0f0;
-            height: 100%;
-            vertical-align: middle;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/mystyles.css" />
 </head>
 
 <body>

@@ -1,0 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+}
+
+#full {
+    margin: 20px;
+    padding: 20px;
+    background: #0f0;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.line {
+    margin: 20px;
+    line-height: 20px;
+}

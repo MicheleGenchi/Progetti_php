@@ -4,41 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style type="text/css">
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-        #full {
-            margin: auto;
-            padding: 40px;
-            background: #0f0;
-            height: 100%;
-            vertical-align: middle;
-        }
-
-        th,
-        td {
-            border: 1px solid black;
-            border-radius: 10px;
-            padding: 10px 10px;
-            margin: 7px 7px;
-            font-size: 26px;
-        }
-        th {
-            font-weight:bold;
-            background-color: darkgreen;
-            color:limegreen;
-        }
-        td:first-child, th:first-child {
-            width:200px;
-        }
-        td:nth-child(2), th>td {
-            width:250px;
-            background-color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/mystyles.css" />
     <title>Connessione</title>
 </head>
 
