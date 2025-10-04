@@ -5,3 +5,6 @@
 /microservices/template/.vscode
 /.vscode
 
+.vscode/launch.json
+conf/.vscode/launch.json
+microservices/creacv/.vscode/launch.json
