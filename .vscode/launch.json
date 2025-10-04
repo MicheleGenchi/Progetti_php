@@ -10,8 +10,8 @@
             "request": "launch",
             "port": 9003,
             "pathMappings": {
-                "/template/": "${workspaceRoot}/microservices/template/project", //esempio
-                "/creacv/": "${workspaceRoot}/microservices/creacv/project" //creacv microservice
+                "/template/": "${workspaceRoot}\\microservices\\template\\project", //esempio
+                "/creacv/": "${workspaceRoot}\\microservices\\creacv\\project" //creacv microservice
             }
         }
     ]
