@@ -53,7 +53,7 @@ class XmlController extends BaseController
                 'code' => self::HTTP_OK,
                 'response' => 'File uploaded successfully!',
                 'file' =>$_FILES['file'],
-                'data' => $xml
+                'data' => JSON_DECODE($xml)
             ];
             return response()->json($temp, $temp['code']);
         } catch (Exception $e) {

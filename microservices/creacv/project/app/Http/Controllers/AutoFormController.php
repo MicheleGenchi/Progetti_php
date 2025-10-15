@@ -47,7 +47,7 @@ class AutoFormController extends BaseController
         }
 
         try {
-            $url="http://172.17.0.1:8000/"; //ip docker da ifconfig
+            $url="http://localhost:8000/"; //ip docker da ifconfig
             $urldoc=$url."api/upload";
             $urlxml=$url."api/uploadXml";
             $files = $_FILES;
