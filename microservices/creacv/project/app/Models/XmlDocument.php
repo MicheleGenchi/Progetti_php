@@ -39,11 +39,6 @@ class XmlDocument extends Document
     function readXml(String $fileName): String
     {
         $this->xml=$this->xmlfromfile($fileName);
-/*         $string= (isset($this->xml))?JSON_ENCODE($this->xml):"xml object not found";
-        $string=str_replace("\"" , "",$string);
-        $string=str_replace("{" , "\n",$string);
-        $campi=explode(":",$string); */
-
         return (isset($this->xml))?JSON_ENCODE($xml = $this->xml, JSON_PRETTY_PRINT):"xml object not found";
     }
 
