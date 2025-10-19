@@ -74,9 +74,10 @@ class Document
         $content = '';
         foreach ($this->phpWord->getSections() as $section) {
             foreach ($section->getElements() as $element) {
-                $content.=$this->matched_element($element);
+                $content.=$this->matched_element($element).' ';
             }
         }
+        //$content=preg_match('/^([0-9]+)$/', $content);
         return ['code' => 200, 'testo' => $content];
     }
 

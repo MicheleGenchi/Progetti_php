@@ -19,13 +19,16 @@ trait HandlerWordTrait
 {
  
 
-    private function elabora(string $text): string
+    public function elabora(string $text): String
     {
-        $array = explode(' ', $text);
+        //$text=str_replace(['\n','\f','\t',' '], '|', $text); 
+        $text = preg_replace('/\s+/u', '|', trim($text));
+        $array=explode('|', $text);
         $temptext = '';
         foreach ($array as $element) {
             $temptext.=(str_starts_with($element, SYMBOLMATCH)) ? $element . ';' : '';
         }
+        $temptext=substr($temptext, 0, strlen($temptext)-1);
         return $temptext;
     }
 
@@ -77,14 +80,14 @@ trait HandlerWordTrait
         switch (get_class($element)) {
             case 'PhpOffice\PhpWord\Element\TextRun':
                 foreach ($element->getElements() as $e) {
-                    $text .= $this->getTextFromTextRun($e);
+                    $text.= $this->getTextFromTextRun($e);
                 }
                 break;
             case 'PhpOffice\PhpWord\Element\Text':
-                $text .= $this->elabora($element->getText());
+                $text.= $element->getText();//$this->elabora($element->getText());
                 break;
             case 'PhpOffice\PhpWord\Element\TextBreak':
-                $text .= '';
+                $text.= '';
             default:
                 break;
         }

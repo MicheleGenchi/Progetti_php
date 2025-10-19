@@ -42,7 +42,7 @@ class XmlDocument extends Document
         return (isset($this->xml))?JSON_ENCODE($xml = $this->xml, JSON_PRETTY_PRINT):"xml object not found";
     }
 
-    private function elabora(string $text): string
+/*     private function elabora(string $text): string
     {
         $array = explode(' ', $text);
         $temptext = '';
@@ -50,7 +50,7 @@ class XmlDocument extends Document
             $temptext.=$element;
         }
         return $temptext;
-    }
+    } */
 
     public function compilaDocumento(Array $request):String 
     {

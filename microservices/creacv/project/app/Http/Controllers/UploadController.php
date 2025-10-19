@@ -51,7 +51,7 @@ class UploadController extends BaseController
             $doc = new Document();
             $response = $doc->read($_FILES['file']['tmp_name']);
             $doc->setProperties();
-
+            $words=$doc->elabora($response['testo']);
             if ($response['code'] != 200)
                 throw new InvalidFormatException();
             else {
@@ -59,7 +59,8 @@ class UploadController extends BaseController
                     'code' => self::HTTP_OK,
                     'response' => 'File uploaded successfully!',
                     'file' => $_FILES['file'],
-                    'data' => Document::convertTextToArray($response['testo'])
+                    'testo' => $response['testo'],
+                    'data' => Document::convertTextToArray($words)
                 ];
                 $fileName = public_path('uploads') . '/' . $_FILES['file']['name'];
                 $temparray = explode(".", $fileName);

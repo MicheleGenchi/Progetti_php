@@ -51,16 +51,11 @@ class AutoFormController extends BaseController
             $urldoc=$url."api/upload";
             $urlxml=$url."api/uploadXml";
             $files = $_FILES;
-            //request UploadController upload
-            $responseDoc=self::callHttp("post",$urldoc, ['form_params' => $files['filedoc']]);
-            //request XmlController uploadXml
-            $responseXml=self::callHttp("post",$urlxml, ['form_params' => $files['filexml']]);
+            $filesdoc=$files['filedoc'];
+            $filesxml=$files['filexml'];
 
-            // TODO : codice che sostituisce tutte le che iniziano con "$_" prendendo "dall'xml"
-            //$doc=new Document();
-            //$doc->scrivi($responseDoc[],$responseXml['response']['mappa']);
-            
-
+            $responseDoc=[];
+            $responseXml=[];
 
             return response()->json(["document" => json_encode($responseDoc), "xml" => json_encode($responseXml)], self::HTTP_OK); 
         } catch (Exception $e) {
