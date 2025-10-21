@@ -6,17 +6,12 @@ namespace App\Models;
 
 use App\Traits\HandlerWordTrait;
 use App\Traits\WithRestUtilsTrait;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use PharIo\Manifest\Extension;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\TemplateProcessor;
-use PhpOffice\PhpWord\Metadata\DocInfo;
 use PhpOffice\PhpWord\IOFactory;
 use Exception;
-use Illuminate\Http\JsonResponse;
-use SimpleXMLElement;
-use stdClass;
+
 
 class Document
 {
@@ -90,14 +85,19 @@ class Document
     function scrivi(String $nomefile, String $template, Object $words)
     {
         //rename($nomefile ,$nomefile.'.docx');
-        $templateProcessor = new TemplateProcessor($nomefile.'.docx');
+        $reader = IOFactory::createReader('Word2007');
+        $objReader = $reader->load($nomefile);
+        $templateProcessor = new TemplateProcessor( $objReader);
         foreach ($words->fields as $key => $word) {
-            $word=isset($word)?'.........................':$word;
+            if ($word instanceof \StdClass) $word='';
             $templateProcessor->setValue($key, $word);
             //$template=str_replace('$_'.$key, $word, $template);
         }
         $fileout=public_path().'/uploads/elaborato.docx';
-        $templateProcessor->saveAs($fileout);
+        $temporary_file_path=$templateProcessor->save();
+        $phpWord = IOFactory::load($temporary_file_path, 'Word2007');
+        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save($fileout);
         return ['merge' => "OK"];
     }
 }
