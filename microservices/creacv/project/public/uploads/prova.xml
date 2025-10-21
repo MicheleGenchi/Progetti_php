@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <data>
   <fields>
-    <nome/>
-    <cognome/>
-    <via/>
-    <civico/>
-    <cap/>
-    <residenza/>
-    <provincia/>
+    <nome>Michele</nome>
+    <cognome>Genchi</cognome>
+    <via>Dante</via>
+    <civico>205</civico>
+    <cap>74121</cap>
+    <residenza>Taranto</residenza>
+    <provincia>Ta</provincia>
   </fields>
 </data>
