@@ -8,7 +8,6 @@ use App\Traits\HandlerWordTrait;
 use App\Traits\WithRestUtilsTrait;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
-use PhpOffice\PhpWord\TemplateProcessor;
 use PhpOffice\PhpWord\IOFactory;
 use Exception;
 
@@ -22,9 +21,9 @@ class Document
     private int $countSection = 1;
     protected PhpWord $phpWord;
 
-    function __construct(?String $nomefile = null)
+    function __construct(?string $nomefile = null)
     {
-    
+
     }
 
     function setProperties($creator = 'Michele Genchi', $title = 'PHPWord')
@@ -59,10 +58,10 @@ class Document
         $this->sections[$count]->addText($testo);
     }
 
-    function read($nomefile): Array
+    function read($nomefile): array
     {
-        rename($nomefile ,$nomefile.'.docx');
-        $nomefile.='.docx';
+        rename($nomefile, $nomefile . '.docx');
+        $nomefile .= '.docx';
         if (isset($nomefile)) {
             try {
                 $objReader = IOFactory::createReader('Word2007');
@@ -75,30 +74,33 @@ class Document
         $content = '';
         foreach ($this->phpWord->getSections() as $section) {
             foreach ($section->getElements() as $element) {
-                $content.=$this->matched_element($element).' ';
+                $content .= $this->matched_element($element) . ' ';
             }
         }
         //$content=preg_match('/^([0-9]+)$/', $content);
         return ['code' => self::HTTP_OK, 'testo' => $content];
     }
 
-    function scrivi(String $nomefile, String $template, Object $words)
+    
+    function scrivi(string $nomefile, string $template, object $words)
     {
         //rename($nomefile ,$nomefile.'.docx');
         $reader = IOFactory::createReader('Word2007');
-        $objReader = $reader->load($nomefile);
-        $templateProcessor = new TemplateProcessor( $objReader);
-        foreach ($words->fields as $key => $word) {
-            if ($word instanceof \StdClass) $word='';
-            $templateProcessor->setValue($key, $word);
-            //$template=str_replace('$_'.$key, $word, $template);
+        $phpWord = $reader->load($nomefile.'.docx');
+        $content = '';
+        foreach ($this->phpWord->getSections() as $section) {
+            foreach ($section->getElements() as $element) {
+                $content .= $this->matched_element($element) . ' ';
+                foreach($words->fields as $key => $value) {
+                    if (!($value instanceof \StdClass))
+                        $content = str_replace('$_'.$key, $value, $content);
+                }
+            }
         }
-        $fileout=public_path().'/uploads/elaborato.docx';
-        $temporary_file_path=$templateProcessor->save();
-        $phpWord = IOFactory::load($temporary_file_path, 'Word2007');
-        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-        $objWriter->save($fileout);
-        return ['merge' => "OK"];
+
+        $reader = IOFactory::createWriter( $phpWord,'Word2007');
+        $reader->save($nomefile);
+        return ['merge' => $content];
     }
 }
 
