@@ -99,7 +99,7 @@ class Document
         }
 
         $reader = IOFactory::createWriter( $phpWord,'Word2007');
-        $reader->save($nomefile);
+        $reader->save(PUBLIC_PATH().'/uploads/elaborato.docx');
         return ['merge' => $content];
     }
 }
