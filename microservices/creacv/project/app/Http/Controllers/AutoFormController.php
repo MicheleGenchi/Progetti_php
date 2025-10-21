@@ -12,8 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Models\Document;
-use App\Models\XmlDocument;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 
 class AutoFormController extends BaseController
@@ -23,7 +22,7 @@ class AutoFormController extends BaseController
         DBUtilitiesTrait,
         WithValidationTrait;
 
-    public function compilaDocumento(Request $request): JsonResponse|RedirectResponse
+    public function compilaDocumento(Request $request):JsonResponse|BinaryFileResponse
     {
         $constraints = new Assert\Collection([
             // the keys correspond to the keys in the input array
@@ -51,13 +50,12 @@ class AutoFormController extends BaseController
             $urldoc=$url."api/upload";
             $urlxml=$url."api/uploadXml";
             $files = $_FILES;
-            $filesdoc=$files['filedoc'];
-            $filesxml=$files['filexml'];
-
-            $responseDoc=[];
-            $responseXml=[];
-
-            return response()->json(["document" => json_encode($responseDoc), "xml" => json_encode($responseXml)], self::HTTP_OK); 
+            $filedoc=$files['filedoc'];
+            $filexml=$files['filexml'];
+            
+            $response=self::mergeXmlDocument($filedoc['tmp_name'], $filexml['tmp_name']);
+            //return response()->download($filedoc['tmp_name']);
+            return response()->json($response, self::HTTP_OK); 
         } catch (Exception $e) {
             $temp = [
                 'code' => $e->getCode(),

@@ -5,17 +5,23 @@ namespace App\Models;
 //require_once 'vendor/autoload.php'; // Include Composer's autoloader
 
 use App\Traits\HandlerWordTrait;
+use App\Traits\WithRestUtilsTrait;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use PharIo\Manifest\Extension;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpWord\TemplateProcessor;
 use PhpOffice\PhpWord\Metadata\DocInfo;
 use PhpOffice\PhpWord\IOFactory;
 use Exception;
+use Illuminate\Http\JsonResponse;
+use SimpleXMLElement;
+use stdClass;
 
 class Document
 {
-    use HandlerWordTrait;
+    use HandlerWordTrait,
+        WithRestUtilsTrait;
 
     private array $sections = array();
     private int $countSection = 1;
@@ -78,17 +84,21 @@ class Document
             }
         }
         //$content=preg_match('/^([0-9]+)$/', $content);
-        return ['code' => 200, 'testo' => $content];
+        return ['code' => self::HTTP_OK, 'testo' => $content];
     }
 
-    function scrivi(String $nomefile, Array $words)
+    function scrivi(String $nomefile, String $template, Object $words)
     {
-        $response = $this->read($_FILES['file']['tmp_name']);
-        foreach ($words as $key => $value) {
-            $response['testo'] = str_replace($key, $value, $response['testo']);
+        //rename($nomefile ,$nomefile.'.docx');
+        $templateProcessor = new TemplateProcessor($nomefile.'.docx');
+        foreach ($words->fields as $key => $word) {
+            $word=isset($word)?'.........................':$word;
+            $templateProcessor->setValue($key, $word);
+            //$template=str_replace('$_'.$key, $word, $template);
         }
-        $writer = IOFactory::createWriter($this->phpWord, 'Word2007'); // Or 'OOXML'
-        $writer->save($nomefile);
+        $fileout=public_path().'/uploads/elaborato.docx';
+        $templateProcessor->saveAs($fileout);
+        return ['merge' => "OK"];
     }
 }
 

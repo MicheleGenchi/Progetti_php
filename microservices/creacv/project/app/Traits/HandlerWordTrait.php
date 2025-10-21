@@ -87,7 +87,7 @@ trait HandlerWordTrait
                 $text.= $element->getText();//$this->elabora($element->getText());
                 break;
             case 'PhpOffice\PhpWord\Element\TextBreak':
-                $text.= '';
+                $text.= '\n';
             default:
                 break;
         }

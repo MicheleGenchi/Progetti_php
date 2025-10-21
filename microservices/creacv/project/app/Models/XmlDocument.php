@@ -25,7 +25,7 @@ class XmlDocument extends Document
     protected SimpleXMLElement $xml;
     protected PhpWord $word;
 
-    private function xmlfromfile(String $fileName): bool|SimpleXMLElement|Array
+    function xmlfromfile(String $fileName): bool|SimpleXMLElement|Array
     {
         rename($fileName, $fileName . '.xml');
         $fileName .= '.xml';
@@ -41,16 +41,6 @@ class XmlDocument extends Document
         $this->xml=$this->xmlfromfile($fileName);
         return (isset($this->xml))?JSON_ENCODE($xml = $this->xml, JSON_PRETTY_PRINT):"xml object not found";
     }
-
-/*     private function elabora(string $text): string
-    {
-        $array = explode(' ', $text);
-        $temptext = '';
-        foreach ($array as $element) {
-            $temptext.=$element;
-        }
-        return $temptext;
-    } */
 
     public function compilaDocumento(Array $request):String 
     {

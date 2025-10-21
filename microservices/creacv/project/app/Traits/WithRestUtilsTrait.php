@@ -3,10 +3,11 @@
 namespace App\Traits;
 
 use Exception;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\Client\Response;
-use GuzzleHttp\RequestOptions;
+use App\Models\Document;
+use App\Models\XmlDocument;
 
 trait WithRestUtilsTrait
 {
@@ -190,28 +191,17 @@ trait WithRestUtilsTrait
         return $code;
     }
 
-    public static function callHttp(string $tipo, string $url, array $parameters): array
+    public static function mergeXmlDocument(string $filedoc, string $filexml): array
     {
-        //$response=null;
-        $client = new Client();
-        try {
-            // Create a POST request
-            switch ($tipo):
-                case 'post': $response = $client->post($url, [RequestOptions::FORM_PARAMS => $parameters]);break;
-                case 'get': $response = $client->get($url, [RequestOptions::QUERY => $parameters]);break;
-                case 'put': $response = $client->put($url, [RequestOptions::FORM_PARAMS => $parameters]);break;
-                case'delete': $response = $client->delete($url, [RequestOptions::FORM_PARAMS => $parameters]);break;
-                case 'view': $response = $client->get($url, []);break;
-                default: $response = "callhttp $tipo inesistente!";
-            endswitch;
-        } catch (GuzzleException $ge) {
-            return ['code' => $ge->getCode(), 'error' => $ge->getMessage()];
-        }
+        $doc=new Document();
+        $tempDoc=$doc->read($filedoc);
 
-        // Parse the response object, e.g. read the headers, body, etc.
-        $headers = $response->getHeaders();
-        $body = $response->getBody();
-        // Output headers and body for debugging purposes
-        return ['header' => $headers, 'body' => $body];
+        $xml=new XmlDocument();
+        $tempXml=json_decode(json_encode($xml->xmlfromfile($filexml)));
+        
+        // merge
+        $merge=$doc->scrivi($filedoc, $tempDoc['testo'], $tempXml);
+        return ['code' => 200, 'input' => ['template' => $tempDoc['testo'], 'xml' => $tempXml], 'merge' => $merge];
+
     }
 }
