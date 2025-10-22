@@ -81,26 +81,29 @@ class Document
         return ['code' => self::HTTP_OK, 'testo' => $content];
     }
 
-    
+
     function scrivi(string $nomefile, string $template, object $words)
     {
-        //rename($nomefile ,$nomefile.'.docx');
-        $reader = IOFactory::createReader('Word2007');
-        $phpWord = $reader->load($nomefile.'.docx');
+        $objReader = IOFactory::createReader('Word2007');
+        $phpWord = $objReader->load($nomefile.'.docx');
         $content = '';
-        foreach ($this->phpWord->getSections() as $section) {
+        foreach ($phpWord->getSections() as $section) {
             foreach ($section->getElements() as $element) {
-                $content .= $this->matched_element($element) . ' ';
-                foreach($words->fields as $key => $value) {
+                $content .= self::matched_element($element) . ' ';
+                foreach ($words->fields as $key => $value) {
                     if (!($value instanceof \StdClass))
-                        $content = str_replace('$_'.$key, $value, $content);
+                        $content = str_replace('$_' . $key, $value, $content);
                 }
             }
         }
 
-        $reader = IOFactory::createWriter( $phpWord,'Word2007');
-        $reader->save(PUBLIC_PATH().'/uploads/elaborato.docx');
+/*         $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+        file_put_contents(PUBLIC_PATH('/uploads/my.docx'), $content);
+        $objWriter->save(PUBLIC_PATH('/uploads/my.docx'));
+ */        
+        
         return ['merge' => $content];
+        
     }
 }
 
