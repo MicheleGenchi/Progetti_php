@@ -9,6 +9,8 @@ use App\Traits\WithRestUtilsTrait;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\TemplateProcessor;
+use Illuminate\Http\Response;
 use Exception;
 
 
@@ -83,28 +85,17 @@ class Document
 
 
     function scrivi(string $nomefile, string $template, object $words)
-    {
-        $objReader = IOFactory::createReader('Word2007');
-        $phpWord = $objReader->load($nomefile.'.docx');
-        $content = '';
-        foreach ($phpWord->getSections() as $section) {
-            foreach ($section->getElements() as $element) {
-                $content .= self::matched_element($element) . ' ';
-                foreach ($words->fields as $key => $value) {
-                    if (!($value instanceof \StdClass))
-                        $content = str_replace('$_' . $key, $value, $content);
-                }
-            }
+    {   //rename($nomefile ,$nomefile.'.docx');
+        $templateProcessor = new TemplateProcessor($nomefile.'.docx');
+        foreach ($words->fields as $key => $word) {
+            if (!($word instanceof \StdClass))
+                $templateProcessor->setValue('$_'.$key, $word);
+            //$template=str_replace('$_'.$key, $word, $template);
         }
-
-/*         $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-        file_put_contents(PUBLIC_PATH('/uploads/my.docx'), $content);
-        $objWriter->save(PUBLIC_PATH('/uploads/my.docx'));
- */        
-        
-        return ['merge' => $content];
-        
+        $fileout ='elaborato.docx';
+        $templateProcessor->save();
+        $templateProcessor->saveAs($fileout);
+        return response()->download($fileout);
     }
+
 }
-
-

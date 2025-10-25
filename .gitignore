@@ -8,3 +8,4 @@ microservices/creacv/project/public/elaborato.docx
 
 microservices/creacv/project/app/Models/Document.php
 .gitignore
+microservices/creacv/project/public/uploads/elaborato.docx
