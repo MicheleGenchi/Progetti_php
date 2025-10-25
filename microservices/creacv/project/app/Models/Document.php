@@ -90,7 +90,7 @@ class Document
         foreach ($words->fields as $key => $word) {
             if (!($word instanceof \StdClass))
                 $templateProcessor->setValue('$_'.$key, $word);
-            //$template=str_replace('$_'.$key, $word, $template);
+                //$template=str_replace('$_'.$key, $word, $template);
         }
         $fileout ='elaborato.docx';
         $templateProcessor->save();
