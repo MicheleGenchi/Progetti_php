@@ -10,8 +10,8 @@ use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\TemplateProcessor;
-use Illuminate\Http\Response;
 use Exception;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class Document
@@ -85,17 +85,29 @@ class Document
 
 
     function scrivi(string $nomefile, string $template, object $words)
-    {   //rename($nomefile ,$nomefile.'.docx');
-        $templateProcessor = new TemplateProcessor($nomefile.'.docx');
+    {   
+        $templateProcessor = new TemplateProcessor( $nomefile . '.docx');
         foreach ($words->fields as $key => $word) {
             if (!($word instanceof \StdClass))
-                $templateProcessor->setValue('$_'.$key, $word);
-                //$template=str_replace('$_'.$key, $word, $template);
+                $templateProcessor->setValue($key, $word);
+            //$template=str_replace($key, $word, $template);
         }
-        $fileout ='elaborato.docx';
+        $filepath = public_path() . "/uploads/merge.docx";
         $templateProcessor->save();
-        $templateProcessor->saveAs($fileout);
-        return response()->download($fileout);
-    }
 
-}
+        $response = new Response();
+
+        // Set headers
+        $nomefile.='.docx';
+        $response->headers->set('Cache-Control', 'private');
+        $response->headers->set('Content-type', mime_content_type($nomefile));
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . basename($nomefile) . '";');
+        $response->headers->set('Content-length', filesize($nomefile));
+
+        // Send headers before outputting anything
+        $response->sendHeaders();
+
+        $response->setContent(file_get_contents($nomefile));
+
+        return $response;
+    }

@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use App\Models\Document;
 use App\Models\XmlDocument;
+use Symfony\Component\HttpFoundation\Response;
 
 trait WithRestUtilsTrait
 {
